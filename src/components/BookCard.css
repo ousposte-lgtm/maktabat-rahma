@@ -174,22 +174,5 @@
   letter-spacing: .01em;
 }
 
-/* Fix #9: Featured card — slightly elevated */
-.book-card--featured {
-  position: relative;
-}
-.book-card--featured::before {
-  content: '⭐ Featured';
-  position: absolute;
-  top: -1px; right: 10px;
-  z-index: 3;
-  background: linear-gradient(135deg, #d97706, #b45309);
-  color: #fff;
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 2px 8px rgba(217,119,6,.4);
-}
+/* Featured card — no badge on normal cards */
+.book-card--featured { position: relative; }

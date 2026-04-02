@@ -201,9 +201,9 @@
 /* ── Breakpoints ── */
 @media (max-width: 768px) {
   .navbar__links { display: none; }
-  /* hide lang + theme in top bar on mobile — they live in the drawer instead */
-  .navbar__controls .lang-switcher,
-  .navbar__controls .theme-toggle { display: none; }
+  /* hide desktop-only lang + theme; mobile controls shown separately */
+  .navbar__controls .lang-switcher:not(.lang-switcher--mobile),
+  .navbar__controls .theme-toggle:not(.navbar__mobile-theme) { display: none; }
   .navbar__hamburger { display: flex; }
   .navbar__controls { gap: 4px; }
   .navbar__logo { margin-right: 0; }
