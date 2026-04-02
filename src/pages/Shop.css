@@ -1,0 +1,176 @@
+/* ── Shop — fixed spacing, clean layout ── */
+
+/* ─ Page header band ─ */
+.shop__head {
+  /* sits below navbar thanks to .page padding-top */
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  /* generous vertical padding so it feels airy */
+  padding: 52px 0 44px;
+}
+
+.shop__head-inner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.shop__count {
+  font-size: .8rem;
+  color: var(--ink-faint);
+  padding-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─ Body area — breathing room top & bottom ─ */
+.shop__body {
+  /* top: space between header band and controls */
+  padding-top: 48px;
+  /* bottom: large gap before footer */
+  padding-bottom: 96px;
+}
+
+/* ─ Controls row: search + sort ─ */
+.shop__controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ─ Search bar ─ */
+.shop__search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+  max-width: 560px; /* keeps it from stretching too wide on large screens */
+}
+
+.shop__search-icon {
+  position: absolute;
+  left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--ink-ghost);
+  pointer-events: none;
+}
+
+.shop__search {
+  width: 100%;
+  padding: 13px 48px 13px 46px;
+  border: 1px solid var(--border-mid);
+  border-radius: 12px;
+  font-size: .875rem;
+  color: var(--ink);
+  background: var(--surface);
+  transition: border-color var(--t), box-shadow var(--t);
+}
+.shop__search:focus {
+  border-color: var(--plum);
+  box-shadow: 0 0 0 3px var(--plum-glow);
+  outline: none;
+}
+.shop__search::placeholder { color: var(--ink-ghost); }
+
+.shop__search-clear {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--ink-faint); font-size: .75rem;
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; transition: background var(--t);
+}
+.shop__search-clear:hover { background: var(--surface-2); color: var(--ink); }
+
+/* ─ Sort dropdown ─ */
+.shop__sort {
+  padding: 12px 40px 12px 16px;
+  border: 1px solid var(--border-mid);
+  border-radius: 12px;
+  font-size: .82rem;
+  color: var(--ink-soft);
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color var(--t);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(240,238,232,0.4)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  flex-shrink: 0;
+}
+.shop__sort:focus { border-color: var(--plum); outline: none; }
+
+/* ─ Category pills ─ */
+.shop__cats {
+  display: flex;
+  gap: 8px;
+  /* Space below pills, above product grid */
+  margin-bottom: 36px;
+  flex-wrap: wrap; /* wrap on desktop */
+}
+
+/* mobile: horizontal scroll instead of wrapping into cramped rows */
+@media (max-width: 640px) {
+  .shop__cats {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .shop__cats::-webkit-scrollbar { display: none; }
+}
+
+.shop__cat-btn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: .8rem; font-weight: 500;
+  color: var(--ink-faint);
+  border: 1px solid var(--border);
+  background: transparent;
+  transition: all var(--t);
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.shop__cat-btn:hover { border-color: var(--border-hi); color: var(--ink); background: rgba(255,255,255,.04); }
+.shop__cat-btn.active { background: var(--plum); color: #fff; border-color: var(--plum); box-shadow: var(--sh-plum); }
+
+/* ─ Search results label ─ */
+.shop__search-label {
+  font-size: .8rem; color: var(--ink-faint);
+  margin-bottom: 20px;
+}
+.shop__search-label strong { color: var(--ink-soft); }
+
+/* ─ Book grid ─ */
+.shop__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 24px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .shop__head { padding: 44px 0 36px; }
+  .shop__body { padding-top: 40px; padding-bottom: 80px; }
+}
+
+@media (max-width: 768px) {
+  .shop__grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .shop__head-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+@media (max-width: 600px) {
+  .shop__controls { flex-direction: column; gap: 10px; }
+  .shop__search-wrap { min-width: 0; width: 100%; max-width: 100%; }
+  .shop__sort { width: 100%; }
+  .shop__body { padding-top: 32px; padding-bottom: 64px; }
+}
+
+@media (max-width: 480px) {
+  .shop__head { padding: 36px 0 28px; }
+  .shop__grid { gap: 12px; }
+  .shop__cats { gap: 6px; }
+  .shop__cat-btn { padding: 7px 14px; font-size: .76rem; }
+}

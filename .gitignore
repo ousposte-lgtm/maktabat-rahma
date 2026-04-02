@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Environment variables — NEVER commit this file
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+dist-ssr/
+
+# Vite cache
+.vite/
+
+# Editor
+.DS_Store
+*.suo
+.idea/
+.vscode/
+
+# Seed script service accounts (Firebase leftovers — keep excluded)
+scripts/serviceAccount.json
+
+# Logs
+*.log
+npm-debug.log*

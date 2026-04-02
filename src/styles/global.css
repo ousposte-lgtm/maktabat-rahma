@@ -1,0 +1,170 @@
+/* ═══════════════════════════════════════════════
+   MAKTABAT RAHMA — Design System v3.1
+   Layout Fix: No overlaps, clean flow, responsive
+   ═══════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Amiri:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root, [data-theme="dark"] {
+  --void: #080810; --deep: #0e0e1a; --surface: #131320;
+  --surface-2: #1a1a2e; --surface-3: #222240;
+  --border: rgba(255,255,255,.07); --border-mid: rgba(255,255,255,.12); --border-hi: rgba(255,255,255,.2);
+  --ink: #f2efe9; --ink-soft: rgba(242,239,233,.78); --ink-faint: rgba(242,239,233,.42); --ink-ghost: rgba(242,239,233,.18);
+  --plum: #7c4dbd; --plum-deep: #5e35a0; --plum-light: rgba(124,77,189,.15); --plum-glow: rgba(124,77,189,.35); --plum-text: #b48de8;
+  --gold: #d4a847; --gold-light: rgba(212,168,71,.15); --gold-text: #e8c87a;
+  --green: #22c55e; --bg: var(--void); --card-bg: var(--surface-2); --card-hover: var(--surface-3); --shadow-color: rgba(0,0,0,.55);
+}
+
+[data-theme="light"] {
+  --void: #faf9f5; --deep: #f0ece3; --surface: #ffffff;
+  --surface-2: #f5f1e8; --surface-3: #ece7db;
+  --border: rgba(0,0,0,.07); --border-mid: rgba(0,0,0,.12); --border-hi: rgba(0,0,0,.22);
+  --ink: #18150f; --ink-soft: rgba(24,21,15,.75); --ink-faint: rgba(24,21,15,.48); --ink-ghost: rgba(24,21,15,.22);
+  --plum: #6d3fb5; --plum-deep: #5230a0; --plum-light: rgba(109,63,181,.1); --plum-glow: rgba(109,63,181,.2); --plum-text: #7c4dbd;
+  --gold: #b8890e; --gold-light: rgba(184,137,14,.1); --gold-text: #9a6f00;
+  --green: #16a34a; --bg: var(--void); --card-bg: #ffffff; --card-hover: #f5f1e8; --shadow-color: rgba(0,0,0,.1);
+}
+
+:root {
+  --font-arabic: 'Amiri', serif; --font-display: 'Cormorant Garamond', serif; --font-ui: 'DM Sans', sans-serif;
+  --r-xs: 4px; --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 24px; --r-2xl: 36px;
+  --sh-xs: 0 1px 4px var(--shadow-color); --sh-sm: 0 4px 16px var(--shadow-color);
+  --sh-md: 0 8px 32px var(--shadow-color); --sh-lg: 0 20px 60px var(--shadow-color);
+  --sh-plum: 0 6px 24px rgba(124,77,189,.4); --sh-gold: 0 6px 24px rgba(212,168,71,.3);
+  --ease: cubic-bezier(.4,0,.2,1); --t: 240ms;
+  --navbar-h: 72px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-ui);
+  background: var(--bg); color: var(--ink);
+  line-height: 1.6; min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 350ms var(--ease), color 350ms var(--ease);
+}
+
+/* ── App shell: flex column → footer always at bottom ── */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* main grows to push footer down */
+.app-main {
+  flex: 1 0 auto;
+  /* no position:relative, no overflow:hidden — normal flow */
+}
+
+/* footer never shrinks */
+footer {
+  flex-shrink: 0;
+}
+
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: var(--font-ui); }
+img { max-width: 100%; display: block; }
+input, textarea, select { font-family: var(--font-ui); outline: none; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--deep); }
+::-webkit-scrollbar-thumb { background: var(--plum); border-radius: 99px; }
+
+/* ── Container — consistent, centered, padded ── */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media (max-width: 1024px) { .container { padding-left: 28px; padding-right: 28px; } }
+@media (max-width: 768px)  { .container { padding-left: 20px; padding-right: 20px; } }
+@media (max-width: 480px)  { .container { padding-left: 16px; padding-right: 16px; } }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--font-ui); font-weight: 500; border-radius: 10px;
+  transition: all 200ms var(--ease); white-space: nowrap; cursor: pointer;
+  letter-spacing: .025em; font-size: .875rem;
+}
+.btn-primary {
+  background: var(--plum); color: #fff; padding: 13px 32px;
+  box-shadow: var(--sh-plum); border: 1px solid rgba(255,255,255,.1);
+}
+.btn-primary:hover { background: #8f5fd4; transform: translateY(-2px); box-shadow: 0 14px 36px rgba(124,77,189,.55); }
+.btn-primary:active { transform: translateY(0); }
+.btn-outline { border: 1px solid var(--border-mid); color: var(--ink-soft); padding: 12px 26px; background: transparent; }
+.btn-outline:hover { border-color: var(--plum-text); color: var(--plum-text); background: var(--plum-light); }
+.btn-ghost { color: var(--ink-faint); padding: 8px 14px; border-radius: var(--r-md); }
+.btn-ghost:hover { background: var(--surface-2); color: var(--ink-soft); }
+.btn-gold { background: var(--gold); color: var(--void); padding: 13px 30px; font-weight: 600; box-shadow: var(--sh-gold); border: none; }
+.btn-gold:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-danger { background: #ef4444; color: #fff; padding: 8px 16px; font-size: .82rem; border-radius: var(--r-sm); }
+.btn-danger:hover { background: #dc2626; }
+.btn-sm { padding: 7px 16px; font-size: .8rem; }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none !important; }
+.btn-whatsapp {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: #25D366; color: #fff;
+  font-weight: 600; border-radius: 10px; border: none; cursor: pointer;
+  transition: all 200ms var(--ease); letter-spacing: .015em; font-size: .875rem;
+}
+.btn-whatsapp:hover { background: #128C7E; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37,211,102,.3); }
+
+/* ── Animations ── */
+@keyframes fadeUp    { from { opacity:0; transform:translateY(22px) } to { opacity:1; transform:translateY(0) } }
+@keyframes fadeIn    { from { opacity:0 } to { opacity:1 } }
+@keyframes shimmer   { from { background-position:-200% 0 } to { background-position:200% 0 } }
+@keyframes spin      { to { transform:rotate(360deg) } }
+@keyframes scaleIn   { from { opacity:0; transform:scale(.95) } to { opacity:1; transform:scale(1) } }
+@keyframes slideDown { from { opacity:0; transform:translateY(-12px) } to { opacity:1; transform:translateY(0) } }
+@keyframes float     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+@keyframes marqueeScroll { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+.fade-up  { animation: fadeUp .55s var(--ease) both; }
+.fade-in  { animation: fadeIn .45s var(--ease) both; }
+.scale-in { animation: scaleIn .35s var(--ease) both; }
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-3) 50%, var(--surface) 75%);
+  background-size: 200% 100%; animation: shimmer 1.6s infinite; border-radius: var(--r-sm);
+}
+.spinner {
+  width: 36px; height: 36px; border: 2.5px solid var(--border);
+  border-top-color: var(--plum); border-radius: 50%; animation: spin .7s linear infinite;
+}
+
+.badge { display: inline-block; font-size: .65rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; }
+.badge-plum { background: var(--plum-light); color: var(--plum-text); border: 1px solid rgba(124,77,189,.2); }
+.badge-gold { background: var(--gold-light); color: var(--gold-text); border: 1px solid rgba(212,168,71,.2); }
+
+.section-eyebrow { font-size: .68rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--plum-text); margin-bottom: 12px; display: block; }
+.section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; line-height: 1.12; color: var(--ink); }
+.section-title em { font-style: italic; color: var(--plum-text); }
+
+.ornament { display: flex; align-items: center; gap: 16px; margin: 0 auto; width: fit-content; }
+.ornament::before, .ornament::after { content: ''; display: block; width: 80px; height: 1px; background: var(--border-mid); }
+.ornament span { color: var(--gold); font-size: .9rem; }
+
+/* ── Page: pushed down by fixed navbar ── */
+.page {
+  /* padding-top clears the fixed 72px navbar */
+  padding-top: var(--navbar-h);
+  /* min-height fills the viewport without overflow tricks */
+  min-height: calc(100vh - var(--navbar-h));
+  /* Normal flow — NO position:relative, NO overflow:hidden globally */
+  animation: fadeIn .35s ease;
+}
+
+.empty-state { text-align: center; padding: 100px 20px; color: var(--ink-faint); }
+.empty-state__icon { font-size: 3.5rem; margin-bottom: 20px; }
+.empty-state h3 { font-family: var(--font-display); font-size: 1.7rem; color: var(--ink-soft); margin-bottom: 10px; }
+.empty-state p { font-size: .9rem; }
