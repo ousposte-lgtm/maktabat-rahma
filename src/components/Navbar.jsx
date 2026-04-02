@@ -6,22 +6,19 @@ import { useTheme } from '../contexts/ThemeContext';
 import { t } from '../i18n/translations';
 import './Navbar.css';
 
-const LANGS = ['en', 'ar', 'fr'];
-const LANG_LABELS = { en: 'EN', ar: 'AR', fr: 'FR' };
-
 export default function Navbar() {
   const { itemCount } = useCart();
   const { theme, toggleTheme, lang, setLang } = useTheme();
-  const [open,     setOpen]     = useState(false);
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const location = useLocation();
-  const tx = t[lang] || t['en'];
+  const tx = t[lang];
 
   const NAV_LINKS = [
-    { to: '/',      label: tx.home  },
-    { to: '/shop',  label: tx.shop  },
-    { to: '/cart',  label: tx.cart  },
+    { to: '/',      label: tx.home },
+    { to: '/shop',  label: tx.shop },
+    { to: '/cart',  label: tx.cart },
     { to: '/about', label: tx.about },
   ];
 
@@ -44,7 +41,7 @@ export default function Navbar() {
             <span className="navbar__logo-en">Maktabat Rahma</span>
           </Link>
 
-          {/* Desktop nav links — CENTER */}
+          {/* Desktop links — CENTER */}
           <nav className="navbar__links" aria-label="Main navigation">
             {NAV_LINKS.map(({ to, label }) => (
               <NavLink
@@ -61,25 +58,23 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Controls — RIGHT (always visible, including mobile) */}
+          {/* Controls — RIGHT */}
           <div className="navbar__controls">
-
-            {/* Language switcher — desktop dropdown, mobile compact */}
+            {/* Language switcher */}
             <div className="lang-switcher">
               <button
                 className="lang-switcher__btn"
                 onClick={() => setLangOpen(v => !v)}
                 aria-label="Switch language"
-                aria-expanded={langOpen}
               >
-                <span className="lang-switcher__current">{LANG_LABELS[lang]}</span>
+                <span className="lang-switcher__current">{lang.toUpperCase()}</span>
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M2 4l3 3 3-3"/>
                 </svg>
               </button>
               {langOpen && (
                 <div className="lang-switcher__dropdown">
-                  {LANGS.map(l => (
+                  {['en', 'ar', 'fr'].map(l => (
                     <button
                       key={l}
                       className={`lang-switcher__option ${lang === l ? 'active' : ''}`}
@@ -92,12 +87,12 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Theme toggle — always visible */}
+            {/* Theme toggle */}
             <button
               className="theme-toggle"
               onClick={toggleTheme}
               aria-label="Toggle theme"
-              title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+              title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {theme === 'dark' ? (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -111,7 +106,7 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* Hamburger — mobile only, ONLY for nav links */}
+            {/* Hamburger */}
             <button
               className={`navbar__hamburger ${open ? 'open' : ''}`}
               onClick={() => setOpen(v => !v)}
@@ -124,7 +119,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile drawer — navigation links ONLY */}
+      {/* Mobile drawer */}
       <div className={`navbar__drawer ${open ? 'navbar__drawer--open' : ''}`}>
         <nav className="navbar__drawer-links">
           {NAV_LINKS.map(({ to, label }) => (
@@ -141,11 +136,23 @@ export default function Navbar() {
               )}
             </NavLink>
           ))}
+          <div className="navbar__drawer-controls">
+            <div className="lang-switcher lang-switcher--inline">
+              {['en', 'ar', 'fr'].map(l => (
+                <button key={l} className={`lang-pill ${lang === l ? 'active' : ''}`} onClick={() => setLang(l)}>
+                  {l.toUpperCase()}
+                </button>
+              ))}
+            </div>
+            <button className="theme-toggle" onClick={toggleTheme}>
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+          </div>
         </nav>
       </div>
 
-      {open     && <div className="navbar__overlay" onClick={() => setOpen(false)} />}
-      {langOpen && <div className="navbar__overlay" style={{ zIndex: 897 }} onClick={() => setLangOpen(false)} />}
+      {open && <div className="navbar__overlay" onClick={() => setOpen(false)} />}
+      {langOpen && <div className="navbar__overlay" style={{zIndex:897}} onClick={() => setLangOpen(false)} />}
     </>
   );
 }
