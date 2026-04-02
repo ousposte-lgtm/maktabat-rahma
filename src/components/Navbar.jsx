@@ -58,7 +58,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Controls — RIGHT */}
+          {/* Controls — RIGHT (desktop) */}
           <div className="navbar__controls">
             {/* Language switcher */}
             <div className="lang-switcher">
@@ -106,7 +106,47 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* Hamburger */}
+            {/* Fix #5: Mobile controls OUTSIDE hamburger — visible next to it */}
+            {/* These are ONLY visible on mobile via CSS */}
+            <div className="navbar__mobile-controls">
+              {/* Mobile lang switcher (compact pills) */}
+              <div className="lang-switcher lang-switcher--mobile">
+                <button
+                  className="lang-switcher__btn"
+                  onClick={() => setLangOpen(v => !v)}
+                  aria-label="Switch language"
+                >
+                  <span className="lang-switcher__current">{lang.toUpperCase()}</span>
+                  <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M2 4l3 3 3-3"/>
+                  </svg>
+                </button>
+                {langOpen && (
+                  <div className="lang-switcher__dropdown lang-switcher__dropdown--up">
+                    {['en', 'ar', 'fr'].map(l => (
+                      <button
+                        key={l}
+                        className={`lang-switcher__option ${lang === l ? 'active' : ''}`}
+                        onClick={() => { setLang(l); setLangOpen(false); }}
+                      >
+                        {l === 'en' ? '🇬🇧 EN' : l === 'ar' ? '🇲🇦 عربي' : '🇫🇷 FR'}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile theme toggle */}
+              <button
+                className="theme-toggle navbar__mobile-theme"
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? '☀️' : '🌙'}
+              </button>
+            </div>
+
+            {/* Hamburger — ONLY navigation links inside */}
             <button
               className={`navbar__hamburger ${open ? 'open' : ''}`}
               onClick={() => setOpen(v => !v)}
@@ -119,7 +159,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — ONLY navigation links, no lang/theme */}
       <div className={`navbar__drawer ${open ? 'navbar__drawer--open' : ''}`}>
         <nav className="navbar__drawer-links">
           {NAV_LINKS.map(({ to, label }) => (
@@ -136,18 +176,6 @@ export default function Navbar() {
               )}
             </NavLink>
           ))}
-          <div className="navbar__drawer-controls">
-            <div className="lang-switcher lang-switcher--inline">
-              {['en', 'ar', 'fr'].map(l => (
-                <button key={l} className={`lang-pill ${lang === l ? 'active' : ''}`} onClick={() => setLang(l)}>
-                  {l.toUpperCase()}
-                </button>
-              ))}
-            </div>
-            <button className="theme-toggle" onClick={toggleTheme}>
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
-          </div>
         </nav>
       </div>
 

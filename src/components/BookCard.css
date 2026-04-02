@@ -103,3 +103,93 @@
 
 /* Skeleton */
 .book-card--skel { pointer-events: none; }
+
+/* ── Fix #9: Hover effects + image zoom ── */
+.book-card__img-wrap {
+  overflow: hidden;
+  display: block;
+  position: relative;
+}
+.book-card__img {
+  transition: transform 500ms cubic-bezier(.25,.46,.45,.94) !important;
+}
+.book-card__img-wrap:hover .book-card__img {
+  transform: scale(1.07) !important;
+}
+.book-card__hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.15) 50%, transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 18px;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.book-card__img-wrap:hover .book-card__hover-overlay { opacity: 1; }
+.book-card__view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 99px;
+  background: rgba(255,255,255,.95);
+  color: #1a1a2e;
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  backdrop-filter: blur(8px);
+  transform: translateY(8px);
+  transition: transform 300ms ease;
+  white-space: nowrap;
+}
+.book-card__img-wrap:hover .book-card__view-btn { transform: translateY(0); }
+
+/* Fix #2: Refined price in card */
+.book-card__price-block {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+.book-card__price-amount {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--gold-text, #c9a227);
+  letter-spacing: -.01em;
+  line-height: 1;
+}
+.book-card__price-currency {
+  font-size: .62rem;
+  font-weight: 500;
+  color: var(--ink-ghost);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  margin-bottom: 1px;
+}
+.book-card__price-free {
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--green, #22c55e);
+  letter-spacing: .01em;
+}
+
+/* Fix #9: Featured card — slightly elevated */
+.book-card--featured {
+  position: relative;
+}
+.book-card--featured::before {
+  content: '⭐ Featured';
+  position: absolute;
+  top: -1px; right: 10px;
+  z-index: 3;
+  background: linear-gradient(135deg, #d97706, #b45309);
+  color: #fff;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 8px rgba(217,119,6,.4);
+}

@@ -212,3 +212,39 @@
 @keyframes scaleIn   { from { opacity:0; transform:scale(.9) } to { opacity:1; transform:scale(1) } }
 @keyframes slideDown { from { opacity:0; transform:translateY(-8px) } to { opacity:1; transform:translateY(0) } }
 @keyframes fadeIn    { from { opacity:0 } to { opacity:1 } }
+
+/* ── Fix #5: Mobile controls visible outside hamburger ── */
+.navbar__mobile-controls {
+  display: none; /* hidden on desktop */
+  align-items: center;
+  gap: 6px;
+}
+.navbar__mobile-theme {
+  width: 34px; height: 34px;
+  font-size: .9rem;
+  padding: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.lang-switcher--mobile { display: block; }
+.lang-switcher--mobile .lang-switcher__btn {
+  padding: 5px 9px;
+  font-size: .72rem;
+  gap: 3px;
+}
+.lang-switcher__dropdown--up {
+  top: auto !important;
+  bottom: calc(100% + 8px) !important;
+  min-width: 140px;
+}
+
+@media (max-width: 768px) {
+  /* Hide desktop lang/theme (keep as-is) */
+  .navbar__controls .lang-switcher:not(.lang-switcher--mobile),
+  .navbar__controls .theme-toggle:not(.navbar__mobile-theme) { display: none; }
+
+  /* Show mobile controls next to hamburger */
+  .navbar__mobile-controls { display: flex; }
+
+  /* Remove drawer controls section — no longer needed */
+  .navbar__drawer-controls { display: none; }
+}

@@ -15,7 +15,8 @@ const CAT_COLORS = {
   'Poetry':      '#be185d',
 };
 
-export default function BookCard({ book, delay = 0 }) {
+// Fix #9: Accept `featured` prop to apply larger card styling
+export default function BookCard({ book, delay = 0, featured = false }) {
   const { addToCart, items } = useCart();
   const [added, setAdded]   = useState(false);
   const inCart = items.some(i => i.id === book.id);
@@ -29,7 +30,7 @@ export default function BookCard({ book, delay = 0 }) {
   };
 
   return (
-    <div className="book-card fade-up" style={{ animationDelay: `${delay}ms` }}>
+    <div className={`book-card fade-up ${featured ? 'book-card--featured' : ''}`} style={{ animationDelay: `${delay}ms` }}>
       <Link to={`/book/${book.id}`} className="book-card__img-wrap">
         <img
           src={book.image_url || `https://placehold.co/300x420/1e1e35/b48de8?text=${encodeURIComponent(book.title?.slice(0,10) || '📖')}`}
@@ -38,21 +39,35 @@ export default function BookCard({ book, delay = 0 }) {
           loading="lazy"
           onError={e => { e.target.src = `https://placehold.co/300x420/1e1e35/b48de8?text=📖`; }}
         />
+        {/* Fix #9: Category badge */}
         <div className="book-card__overlay-cat" style={{ background: catColor }}>
           {book.category}
         </div>
+        {/* Fix #9: Hover overlay with "View Details" */}
         <div className="book-card__hover-overlay">
-          <span className="book-card__view-btn">View Details →</span>
+          <span className="book-card__view-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            View Details
+          </span>
         </div>
+        {/* Fix #9: Image zoom effect via CSS */}
       </Link>
 
       <div className="book-card__body">
         <Link to={`/book/${book.id}`} className="book-card__title">{book.title}</Link>
         {book.author && <p className="book-card__author">{book.author}</p>}
         <div className="book-card__footer">
-          <span className="book-card__price">
-            {book.price ? `${Number(book.price).toFixed(2)} MAD` : 'Gratuit'}
-          </span>
+          {/* Fix #2: Refined price inside card */}
+          <div className="book-card__price-block">
+            {book.price ? (
+              <>
+                <span className="book-card__price-amount">{Number(book.price).toFixed(2)}</span>
+                <span className="book-card__price-currency">MAD</span>
+              </>
+            ) : (
+              <span className="book-card__price-free">Gratuit</span>
+            )}
+          </div>
           <button
             className={`book-card__add-btn ${added ? 'added' : ''} ${inCart && !added ? 'in-cart' : ''}`}
             onClick={handleAdd}

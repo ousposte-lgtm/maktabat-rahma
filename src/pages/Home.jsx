@@ -17,7 +17,12 @@ export default function Home() {
   const { books, loading } = useBooks();
   const { lang } = useTheme();
   const tx = t[lang];
-  const featured = books.slice(0, 8);
+
+  // Fix #9: Use is_featured if available, fallback to first 8
+  const featured = (() => {
+    const featuredBooks = books.filter(b => b.is_featured);
+    return featuredBooks.length > 0 ? featuredBooks.slice(0, 8) : books.slice(0, 8);
+  })();
 
   return (
     <div className="page home">
@@ -48,9 +53,7 @@ export default function Home() {
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
               </Link>
-              <Link to="/about" className="btn btn-outline">
-                {tx.about_lib}
-              </Link>
+              <Link to="/about" className="btn btn-outline">{tx.about_lib}</Link>
             </div>
           </div>
 
@@ -89,22 +92,28 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── Featured Books ── */}
+      {/* ── Fix #9: Upgraded Featured Books section ── */}
       <section className="home-featured">
         <div className="container">
+
+          {/* Upgraded header */}
           <div className="home-featured__header">
-            <div>
+            <div className="home-featured__title-block">
               <span className="section-eyebrow">{tx.our_collection}</span>
-              <h2 className="section-title">{tx.featured_books} <em>{tx.featured_em}</em></h2>
+              <h2 className="section-title">
+                {tx.featured_books}{' '}
+                <em className="section-title-em">{tx.featured_em}</em>
+              </h2>
+              <p className="home-featured__subtitle">Discover our hand-picked top reads</p>
             </div>
-            <Link to="/shop" className="btn btn-outline">{tx.view_all}</Link>
+            <Link to="/shop" className="btn btn-outline home-featured__view-all">{tx.view_all}</Link>
           </div>
 
           <div className="home-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => <BookCardSkeleton key={i} />)
               : featured.map((book, i) => (
-                  <BookCard key={book.id} book={book} delay={i * 55} />
+                  <BookCard key={book.id} book={book} delay={i * 55} featured={i === 0} />
                 ))
             }
           </div>

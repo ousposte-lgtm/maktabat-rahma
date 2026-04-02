@@ -232,3 +232,42 @@
   .home-featured { padding-top: 52px; padding-bottom: 64px; }
   .home-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
+
+/* ── Fix #9: Featured section upgrades ── */
+.home-featured__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.home-featured__subtitle {
+  font-size: .84rem;
+  color: var(--ink-ghost);
+  font-style: italic;
+  margin: 0;
+  letter-spacing: .01em;
+}
+.home-featured__view-all {
+  align-self: flex-end;
+  white-space: nowrap;
+}
+.section-title-em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--plum-text), var(--gold-text));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+/* Fix #9: First card featured (larger) layout on desktop */
+.home-grid .book-card:first-child {
+  grid-row: span 2;
+}
+.home-grid .book-card:first-child .book-card__img-wrap {
+  aspect-ratio: 3/5;
+}
+
+@media (max-width: 900px) {
+  .home-grid .book-card:first-child { grid-row: span 1; }
+  .home-grid .book-card:first-child .book-card__img-wrap { aspect-ratio: 3/4; }
+}

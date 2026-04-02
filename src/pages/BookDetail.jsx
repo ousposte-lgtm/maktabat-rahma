@@ -1,7 +1,7 @@
 // src/pages/BookDetail.jsx
-import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useBooks } from '../contexts/BooksContext';   // ← global cache, no extra fetch
+import { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useBooks } from '../contexts/BooksContext';
 import { useCart }  from '../contexts/CartContext';
 import './BookDetail.css';
 
@@ -67,7 +67,6 @@ const RefreshIcon = () => (
   </svg>
 );
 
-/* ── CAT_COLORS kept from original ── */
 const CAT_COLORS = {
   'Fiction':     '#6b3fa0',
   'Non-Fiction': '#0f766e',
@@ -81,13 +80,20 @@ const CAT_COLORS = {
 
 export default function BookDetail() {
   const { id }    = useParams();
+  const navigate  = useNavigate();
   const { addToCart, items }    = useCart();
-  const { getBookById, loading: booksLoading } = useBooks();  // ← cache
+  const { getBookById, loading: booksLoading } = useBooks();
   const [added, setAdded] = useState(false);
+  // Fix #7: gallery state for multiple images
+  const [activeImg, setActiveImg] = useState(0);
 
-  // Instant lookup — no network call, no extra useEffect
+  // Fix #1: Scroll to top on load
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [id]);
+
   const book   = getBookById(id);
-  const loading = booksLoading;   // only true on very first app load
+  const loading = booksLoading;
   const inCart  = items.some(i => i.id === id);
 
   const handleAdd = () => {
@@ -96,7 +102,6 @@ export default function BookDetail() {
     setTimeout(() => setAdded(false), 2200);
   };
 
-  /* ── loading state ── */
   if (loading) return (
     <div className="page bd-loading">
       <div className="bd-spinner-wrap">
@@ -106,7 +111,6 @@ export default function BookDetail() {
     </div>
   );
 
-  /* ── not found ── */
   if (!book) return (
     <div className="page bd-loading">
       <div className="empty-state">
@@ -121,7 +125,20 @@ export default function BookDetail() {
   );
 
   const catColor  = CAT_COLORS[book.category] || '#6b3fa0';
-  const priceText = book.price ? `${Number(book.price).toFixed(2)} MAD` : 'Free';
+
+  // Fix #7: Support multiple images — images array or single image_url
+  const images = (() => {
+    if (book.images && Array.isArray(book.images) && book.images.length > 0) {
+      return book.images.filter(Boolean);
+    }
+    if (book.image_url) return [book.image_url];
+    return [`https://placehold.co/480x640/1a1a2e/b48de8?text=📖`];
+  })();
+
+  const currentImg = images[activeImg] || images[0];
+
+  // Fix #2: Refined price display
+  const priceNum = book.price ? Number(book.price).toFixed(2) : null;
 
   return (
     <div className="page book-detail">
@@ -151,21 +168,37 @@ export default function BookDetail() {
           {/* LEFT — Image */}
           <div className="bd-image-col">
             <div className="bd-image-frame">
-              {/* Category ribbon */}
               {book.category && (
                 <div className="bd-image-badge" style={{ background: catColor }}>
                   {book.category}
                 </div>
               )}
               <img
-                src={book.image_url || `https://placehold.co/480x640/1a1a2e/b48de8?text=📖`}
+                src={currentImg}
                 alt={book.title}
                 className="bd-image"
                 onError={e => { e.target.src = 'https://placehold.co/480x640/1a1a2e/b48de8?text=📖'; }}
               />
-              {/* Ambient glow under the cover */}
               <div className="bd-image-glow" style={{ background: catColor }} />
             </div>
+
+            {/* Fix #7: Thumbnails for multiple images */}
+            {images.length > 1 && (
+              <div className="bd-thumbnails">
+                {images.map((img, i) => (
+                  <button
+                    key={i}
+                    className={`bd-thumb-btn ${i === activeImg ? 'bd-thumb-btn--active' : ''}`}
+                    onClick={() => setActiveImg(i)}
+                    aria-label={`View image ${i + 1}`}
+                  >
+                    <img src={img} alt={`${book.title} ${i + 1}`}
+                      onError={e => { e.target.src = 'https://placehold.co/80x110/1a1a2e/b48de8?text=📖'; }}
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Trust badges */}
             <div className="bd-trust-row">
@@ -219,12 +252,18 @@ export default function BookDetail() {
               <span className="bd-rating__count">(4.0)</span>
             </div>
 
-            {/* Divider */}
             <div className="bd-divider" />
 
-            {/* Price block */}
+            {/* Fix #2: Improved price display */}
             <div className="bd-price-block">
-              <span className="bd-price">{priceText}</span>
+              {priceNum ? (
+                <div className="bd-price-refined">
+                  <span className="bd-price-amount">{priceNum}</span>
+                  <span className="bd-price-currency">MAD</span>
+                </div>
+              ) : (
+                <span className="bd-price-free">Free</span>
+              )}
               <span className="bd-stock-badge">
                 <span className="bd-stock-dot" />
                 In Stock
@@ -238,7 +277,6 @@ export default function BookDetail() {
               </div>
             )}
 
-            {/* Divider */}
             <div className="bd-divider" />
 
             {/* Action buttons */}
@@ -267,6 +305,16 @@ export default function BookDetail() {
                 View Cart
                 <ArrowRightIcon />
               </Link>
+
+              {/* Fix #3: Back button */}
+              <button
+                className="bd-back-btn"
+                onClick={() => navigate(-1)}
+                aria-label="Go back"
+              >
+                <ArrowLeftIcon />
+                Back
+              </button>
             </div>
 
             {/* Success toast */}
