@@ -120,3 +120,19 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.books;
 --    4. npm install && npm run dev
 --    5. (Optional) npm run seed  — to insert sample books
 -- ══════════════════════════════════════════════════════════════════════
+
+
+-- ═══════════════════════════════════════════════════════════════════════
+--  MIGRATION v2 — Run these AFTER the initial schema
+--  Adds: featured flag + multiple images array
+-- ═══════════════════════════════════════════════════════════════════════
+
+-- Fix 8: Featured product toggle
+ALTER TABLE public.books
+  ADD COLUMN IF NOT EXISTS is_featured boolean DEFAULT false NOT NULL;
+
+CREATE INDEX IF NOT EXISTS books_featured_idx ON public.books (is_featured) WHERE is_featured = true;
+
+-- Fix 7: Multiple images per product (stored as array of URLs)
+ALTER TABLE public.books
+  ADD COLUMN IF NOT EXISTS images text[] DEFAULT '{}' NOT NULL;

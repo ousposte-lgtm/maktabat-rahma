@@ -14,15 +14,17 @@ const MARQUEE_ITEMS = [
 ];
 
 export default function Home() {
-  const { books, loading } = useBooks();
+  const { books, loading, featuredBooks } = useBooks();
   const { lang } = useTheme();
-  const tx = t[lang];
-  const featured = books.slice(0, 8);
+  const tx = t[lang] || t['en'];
+
+  // Fix 8: use featured books if any are marked, else fall back to newest 8
+  const displayed = featuredBooks.length > 0 ? featuredBooks : books.slice(0, 8);
 
   return (
     <div className="page home">
 
-      {/* ── Hero ── */}
+      {/* Hero */}
       <section className="hero">
         <div className="hero__bg" />
         <div className="hero__grid" />
@@ -48,9 +50,7 @@ export default function Home() {
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
               </Link>
-              <Link to="/about" className="btn btn-outline">
-                {tx.about_lib}
-              </Link>
+              <Link to="/about" className="btn btn-outline">{tx.about_lib}</Link>
             </div>
           </div>
 
@@ -65,7 +65,6 @@ export default function Home() {
               </div>
               <div className="hero__glow" />
             </div>
-
             <div className="hero__float-badge">
               <div className="hero__float-badge-icon">📚</div>
               <div className="hero__float-badge-text">
@@ -77,7 +76,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Marquee ── */}
+      {/* Marquee */}
       <div className="home-marquee">
         <div className="home-marquee__track">
           {MARQUEE_ITEMS.map((item, i) => (
@@ -89,13 +88,15 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── Featured Books ── */}
+      {/* Featured Books */}
       <section className="home-featured">
         <div className="container">
           <div className="home-featured__header">
             <div>
               <span className="section-eyebrow">{tx.our_collection}</span>
-              <h2 className="section-title">{tx.featured_books} <em>{tx.featured_em}</em></h2>
+              <h2 className="section-title">
+                {tx.featured_books} <em>{tx.featured_em}</em>
+              </h2>
             </div>
             <Link to="/shop" className="btn btn-outline">{tx.view_all}</Link>
           </div>
@@ -103,7 +104,7 @@ export default function Home() {
           <div className="home-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => <BookCardSkeleton key={i} />)
-              : featured.map((book, i) => (
+              : displayed.map((book, i) => (
                   <BookCard key={book.id} book={book} delay={i * 55} />
                 ))
             }
@@ -118,7 +119,6 @@ export default function Home() {
           )}
         </div>
       </section>
-
     </div>
   );
 }
