@@ -62,7 +62,7 @@ export default function About() {
           <div className="about-visual">
             <div className="about-store-img-wrap">
               <img
-                src="/bookstore.webp"
+                src="/bookstore-about.webp"
                 alt="مكتبة رحمة"
                 className="about-store-img"
                 onError={e => { e.target.style.display='none'; }}

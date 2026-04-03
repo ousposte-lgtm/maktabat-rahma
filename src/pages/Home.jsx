@@ -1,5 +1,5 @@
 // src/pages/Home.jsx — fully translated
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FeaturedCard from '../components/FeaturedCard';
 import BookCard, { BookCardSkeleton } from '../components/BookCard';
 import { useBooks } from '../hooks/useBooks';
@@ -18,6 +18,14 @@ export default function Home() {
   const { books, loading } = useBooks();
   const { lang } = useTheme();
   const tx = t[lang];
+  const navigate = useNavigate();
+
+  // Scroll to top then navigate
+  const goTop = (path) => (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    navigate(path);
+  };
 
   const featuredBooks = books.filter(b => b.is_featured);
   const featured = featuredBooks.length > 0 ? featuredBooks.slice(0, 8) : [];
@@ -149,7 +157,7 @@ export default function Home() {
                 {lang === 'ar' ? 'اكتشف أفضل اختياراتنا' : lang === 'fr' ? 'Découvrez nos meilleures sélections' : 'Discover our hand-picked top reads'}
               </p>
             </div>
-            <Link to="/shop" className="btn btn-outline home-featured__view-all">{tx.view_all}</Link>
+            <Link to="/shop" className="btn btn-outline home-featured__view-all" onClick={goTop('/shop')}>{tx.view_all}</Link>
           </div>
 
           {loading ? (
@@ -184,7 +192,7 @@ export default function Home() {
               {tx.about_strip_title} <em>{tx.about_strip_em}</em>
             </h2>
             <p className="home-about-strip__desc">{tx.about_strip_desc}</p>
-            <Link to="/about" className="btn btn-outline">{tx.learn_more}</Link>
+            <Link to="/about" className="btn btn-outline" onClick={goTop('/about')}>{tx.learn_more}</Link>
           </div>
         </div>
       </section>
@@ -200,7 +208,7 @@ export default function Home() {
                   {tx.all_books} <em className="section-title-em">{tx.all_books_em}</em>
                 </h2>
               </div>
-              <Link to="/shop" className="btn btn-outline home-featured__view-all">{tx.view_all}</Link>
+              <Link to="/shop" className="btn btn-outline home-featured__view-all" onClick={goTop('/shop')}>{tx.view_all}</Link>
             </div>
             <div className="home-grid">
               {loading

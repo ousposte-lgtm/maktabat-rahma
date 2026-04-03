@@ -182,26 +182,67 @@
   background: rgba(0,0,0,.5); animation: fadeIn .2s ease;
 }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
    MOBILE BREAKPOINT
-   Layout: [ Lang+Theme ] [Hamburger] [Logo]
-   ═══════════════════════════════════════ */
+   Layout: [ Hamburger | Lang | Theme ]  ←LEFT   RIGHT→  [ مكتبة رحمة ]
+   ═══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   /* Hide desktop elements */
   .navbar__links,
   .navbar__logo--desktop,
   .navbar__controls--desktop { display: none; }
 
-  /* Show mobile row */
+  /* Show mobile row — full width, space-between */
   .navbar__mobile-row {
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-between;
-    gap: 8px;
+    gap: 0;
   }
 
-  /* LEFT: logo */
+  /* LEFT group: hamburger | lang | theme */
+  .navbar__mobile-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  /* Hamburger — leftmost control */
+  .navbar__hamburger {
+    display: flex;
+    flex-shrink: 0;
+    padding: 7px;
+  }
+
+  /* Lang switcher compact */
+  .navbar__mobile-left .lang-switcher__btn {
+    padding: 5px 9px;
+    font-size: .72rem;
+    gap: 3px;
+  }
+
+  /* Lang dropdown opens downward on mobile */
+  .navbar__mobile-left .lang-switcher__dropdown {
+    top: calc(100% + 6px);
+    bottom: auto;
+    left: 0;
+    right: auto;
+    min-width: 140px;
+    animation: slideDown .2s var(--ease);
+  }
+
+  /* Dark mode toggle compact */
+  .navbar__mobile-theme {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    font-size: .88rem;
+    flex-shrink: 0;
+  }
+
+  /* RIGHT: logo title */
   .navbar__logo--mobile {
     display: flex;
     text-decoration: none;
@@ -209,32 +250,12 @@
   }
   .navbar__logo--mobile .navbar__logo-ar {
     font-family: var(--font-arabic);
-    font-size: 1.3rem; font-weight: 700;
+    font-size: 1.3rem;
+    font-weight: 700;
     color: var(--ink);
     transition: color 200ms ease;
   }
   .navbar__logo--mobile:hover .navbar__logo-ar { color: var(--plum-text); }
-
-  /* RIGHT: hamburger + lang + theme */
-  .navbar__mobile-right {
-    display: flex; align-items: center; gap: 6px;
-    flex-shrink: 0;
-  }
-  .navbar__mobile-right .lang-switcher__btn {
-    padding: 5px 10px; font-size: .72rem; gap: 3px;
-  }
-  .navbar__mobile-theme {
-    width: 34px; height: 34px;
-    border-radius: 8px;
-    flex-shrink: 0;
-  }
-
-  /* Hamburger visible on mobile */
-  .navbar__hamburger { display: flex; flex-shrink: 0; }
-
-  /* RTL: logo stays left (no flip needed — it's positional not directional) */
-  [dir="rtl"] .navbar__mobile-row { flex-direction: row; }
-  [dir="rtl"] .navbar__mobile-right .lang-switcher__dropdown { right: 0; left: auto; }
 }
 
 /* ═══════════════════════════════

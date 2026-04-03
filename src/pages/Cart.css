@@ -221,3 +221,34 @@
   .cart__layout { padding-top: 28px; padding-bottom: 56px; }
   .cart__empty { padding: 72px 20px 80px; }
 }
+
+/* ── Fix #3: WhatsApp button disabled state when form incomplete ── */
+.cart__whatsapp-btn--disabled,
+.cart__whatsapp-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(40%);
+  transform: none !important;
+  box-shadow: none !important;
+}
+.cart__whatsapp-btn--disabled:hover,
+.cart__whatsapp-btn:disabled:hover {
+  background: #25D366 !important;
+  transform: none !important;
+}
+
+/* Helper text shown below form when incomplete */
+.cart__form-hint {
+  font-size: .72rem;
+  color: var(--ink-ghost);
+  text-align: center;
+  margin-top: -4px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.cart__form-hint--warn {
+  color: #f59e0b;
+}

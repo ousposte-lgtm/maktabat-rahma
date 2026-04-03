@@ -1,4 +1,5 @@
-// src/components/Navbar.jsx — Mobile: Logo RIGHT | Hamburger CENTER | Lang+Theme LEFT + scroll-to-top on nav
+// src/components/Navbar.jsx
+// Mobile layout: [Hamburger | Lang | Theme]  ←LEFT   RIGHT→  [مكتبة رحمة]
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
@@ -34,7 +35,7 @@ export default function Navbar() {
     { to: '/about', label: tx.about },
   ];
 
-  // Scroll to top on any nav click
+  // Always scroll to top when navigating
   const handleNavClick = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setOpen(false);
@@ -47,7 +48,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  /* ── Lang Switcher ── */
+  /* ── Shared Lang Switcher ── */
   const LangSwitcher = ({ dropUp = false }) => (
     <div className="lang-switcher">
       <button className="lang-switcher__btn" onClick={() => setLangOpen(v => !v)} aria-label="Switch language">
@@ -76,13 +77,12 @@ export default function Navbar() {
       <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
         <div className="navbar__inner container">
 
-          {/* ── DESKTOP layout ── */}
+          {/* ── DESKTOP: Logo left | Links center | Controls right ── */}
           <Link to="/" className="navbar__logo navbar__logo--desktop" onClick={handleNavClick}>
             <span className="navbar__logo-ar">مكتبة رحمة</span>
             <span className="navbar__logo-en">Maktabat Rahma</span>
           </Link>
 
-          {/* Desktop nav — CENTER */}
           <nav className="navbar__links" aria-label="Main navigation">
             {NAV_LINKS.map(({ to, label }) => (
               <NavLink key={to} to={to} end={to === '/'}
@@ -97,7 +97,6 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Desktop controls — RIGHT */}
           <div className="navbar__controls navbar__controls--desktop">
             <LangSwitcher />
             <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
@@ -105,16 +104,12 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* ── MOBILE layout: LEFT=Logo | RIGHT=Hamburger+Lang+Theme ── */}
+          {/* ── MOBILE: LEFT=[Hamburger|Lang|Theme]  RIGHT=[Logo] ── */}
           <div className="navbar__mobile-row">
 
-            {/* LEFT: Logo */}
-            <Link to="/" className="navbar__logo navbar__logo--mobile" onClick={handleNavClick}>
-              <span className="navbar__logo-ar">مكتبة رحمة</span>
-            </Link>
-
-            {/* RIGHT: Hamburger + Lang + Theme */}
-            <div className="navbar__mobile-right">
+            {/* LEFT group: hamburger first, then lang, then theme */}
+            <div className="navbar__mobile-left">
+              {/* 1. Hamburger — far left */}
               <button
                 className={`navbar__hamburger ${open ? 'open' : ''}`}
                 onClick={() => setOpen(v => !v)}
@@ -122,17 +117,27 @@ export default function Navbar() {
               >
                 <span /><span /><span />
               </button>
-              <LangSwitcher dropUp />
+
+              {/* 2. Language switcher */}
+              <LangSwitcher dropUp={false} />
+
+              {/* 3. Dark mode toggle */}
               <button className="theme-toggle navbar__mobile-theme" onClick={toggleTheme} aria-label="Toggle theme">
                 {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
               </button>
             </div>
+
+            {/* RIGHT: Logo title */}
+            <Link to="/" className="navbar__logo navbar__logo--mobile" onClick={handleNavClick}>
+              <span className="navbar__logo-ar">مكتبة رحمة</span>
+            </Link>
+
           </div>
 
         </div>
       </header>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — nav links only */}
       <div className={`navbar__drawer ${open ? 'navbar__drawer--open' : ''}`}>
         <nav className="navbar__drawer-links">
           {NAV_LINKS.map(({ to, label }) => (
