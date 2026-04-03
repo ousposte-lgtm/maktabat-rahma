@@ -339,3 +339,22 @@
   .bd-trust-item span { display: none; }
   .bd-trust-item + .bd-trust-item { padding-left: 0; }
 }
+
+/* ── Fix #4: Price "MAD 300.00 / piece" in detail page ── */
+.bd-price-piece {
+  font-size: .72rem;
+  color: var(--ink-ghost);
+  font-weight: 400;
+  letter-spacing: .03em;
+  align-self: flex-end;
+  margin-bottom: 3px;
+}
+
+/* ── Fix #5: RTL title alignment ── */
+[dir="rtl"] .bd-title       { text-align: right; }
+[dir="rtl"] .bd-tag         { justify-content: flex-end; }
+[dir="rtl"] .bd-price-row   { flex-direction: row-reverse; }
+[dir="rtl"] .bd-actions .bd-add-btn,
+[dir="rtl"] .bd-cart-link,
+[dir="rtl"] .bd-back-btn    { flex-direction: row-reverse; }
+[dir="rtl"] .bd-meta__label { text-align: right; }

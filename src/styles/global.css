@@ -168,3 +168,90 @@ input, textarea, select { font-family: var(--font-ui); outline: none; }
 .empty-state__icon { font-size: 3.5rem; margin-bottom: 20px; }
 .empty-state h3 { font-family: var(--font-display); font-size: 1.7rem; color: var(--ink-soft); margin-bottom: 10px; }
 .empty-state p { font-size: .9rem; }
+
+/* ═══════════════════════════════════════════════
+   RTL / FULL i18n SUPPORT
+   Applied globally when lang=ar
+   ═══════════════════════════════════════════════ */
+
+/* 1. Flip entire layout for Arabic */
+[dir="rtl"] * { letter-spacing: 0 !important; }
+
+[dir="rtl"] body { font-family: var(--font-arabic), var(--font-ui); }
+
+/* Text alignment */
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3,
+[dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] p,
+[dir="rtl"] li, [dir="rtl"] label,
+[dir="rtl"] .section-title, [dir="rtl"] .section-eyebrow,
+[dir="rtl"] .hero__title, [dir="rtl"] .hero__desc,
+[dir="rtl"] .hero__eyebrow { text-align: right; }
+
+/* Flex rows flip in RTL automatically via html dir, but force explicit ones */
+[dir="rtl"] .navbar__inner       { flex-direction: row-reverse; }
+[dir="rtl"] .navbar__logo        { margin-right: 0; margin-left: 40px; }
+[dir="rtl"] .navbar__controls    { margin-left: 0; margin-right: auto; }
+[dir="rtl"] .navbar__link--active::after { left: auto; right: 50%; transform: translateX(50%); }
+
+/* Hero content */
+[dir="rtl"] .hero__inner         { direction: rtl; }
+[dir="rtl"] .hero__content       { text-align: right; align-items: flex-end; }
+[dir="rtl"] .hero__eyebrow       { flex-direction: row-reverse; }
+[dir="rtl"] .hero__ctas          { flex-direction: row-reverse; justify-content: flex-end; }
+
+/* Breadcrumb */
+[dir="rtl"] .bd-breadcrumb       { flex-direction: row-reverse; }
+[dir="rtl"] .bd-tag              { flex-direction: row-reverse; }
+
+/* Info columns */
+[dir="rtl"] .bd-info             { text-align: right; }
+[dir="rtl"] .bd-author           { flex-direction: row-reverse; justify-content: flex-end; }
+[dir="rtl"] .bd-rating           { flex-direction: row-reverse; justify-content: flex-end; }
+[dir="rtl"] .bd-price-row        { flex-direction: row-reverse; }
+[dir="rtl"] .bd-price-wrap       { flex-direction: row-reverse; justify-content: flex-end; }
+[dir="rtl"] .bd-meta__row        { flex-direction: row-reverse; }
+[dir="rtl"] .bd-trust-item       { flex-direction: row-reverse; }
+
+/* Cards */
+[dir="rtl"] .feat-card__body     { text-align: right; }
+[dir="rtl"] .feat-card__footer   { flex-direction: row-reverse; }
+[dir="rtl"] .feat-card__price-block { flex-direction: row-reverse; }
+[dir="rtl"] .book-card__body     { text-align: right; }
+[dir="rtl"] .book-card__footer   { flex-direction: row-reverse; }
+[dir="rtl"] .book-card__price-block { flex-direction: row-reverse; }
+
+/* Shop page */
+[dir="rtl"] .shop__head-inner    { flex-direction: row-reverse; }
+[dir="rtl"] .shop__controls      { flex-direction: row-reverse; flex-wrap: wrap; }
+[dir="rtl"] .shop__search-wrap   { flex-direction: row-reverse; }
+[dir="rtl"] .shop__cats          { flex-direction: row-reverse; flex-wrap: wrap; }
+
+/* Footer */
+[dir="rtl"] .footer__grid        { direction: rtl; }
+[dir="rtl"] .footer__col         { text-align: right; }
+[dir="rtl"] .footer__links       { align-items: flex-end; }
+[dir="rtl"] .footer__bottom      { flex-direction: row-reverse; }
+
+/* Admin sidebar */
+[dir="rtl"] .admin               { flex-direction: row-reverse; }
+[dir="rtl"] .admin-sidebar       { text-align: right; }
+[dir="rtl"] .admin-nav-item      { flex-direction: row-reverse; justify-content: flex-end; }
+
+/* Forms / inputs keep LTR for usability */
+[dir="rtl"] input[type="email"],
+[dir="rtl"] input[type="password"],
+[dir="rtl"] input[type="number"],
+[dir="rtl"] input[type="url"]    { direction: ltr; text-align: left; }
+
+/* Home featured section */
+[dir="rtl"] .home-featured__header  { flex-direction: row-reverse; }
+[dir="rtl"] .home-featured__title-block { text-align: right; }
+[dir="rtl"] .home-about-strip__inner { direction: rtl; }
+[dir="rtl"] .home-about-strip__text  { text-align: right; }
+
+/* Drawer links in RTL */
+[dir="rtl"] .navbar__drawer-link { flex-direction: row-reverse; justify-content: flex-end; }
+
+/* Lang dropdown in RTL mode */
+[dir="rtl"] .lang-switcher__dropdown { right: auto; left: 0; }
+[dir="rtl"] .lang-switcher__option   { text-align: right; }

@@ -3,28 +3,32 @@ import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import BookCard, { BookCardSkeleton } from '../components/BookCard';
 import { useBooks } from '../hooks/useBooks';
+import { useTheme } from '../contexts/ThemeContext';
+import { t } from '../i18n/translations';
 import './Shop.css';
 
-const CATS = ['All', 'Fiction', 'Non-Fiction', 'Islamic', 'Children', 'History', 'Science', 'Philosophy', 'Poetry'];
-const SORTS = [
-  { value: 'newest',    label: 'Newest First' },
-  { value: 'price-asc', label: 'Price: Low → High' },
-  { value: 'price-desc',label: 'Price: High → Low' },
-  { value: 'alpha',     label: 'A → Z' },
-];
+const CATS_KEYS = ['All', 'Fiction', 'Non-Fiction', 'Islamic', 'Children', 'History', 'Science', 'Philosophy', 'Poetry'];
 
 export default function Shop() {
   const { books, loading } = useBooks();
+  const { lang } = useTheme();
+  const tx = t[lang];
   const [params, setParams] = useSearchParams();
 
   const [search, setSearch] = useState('');
   const [cat, setCat]       = useState(params.get('cat') || 'All');
   const [sort, setSort]     = useState('newest');
 
-  // Sync cat from URL param
+  const SORTS = [
+    { value: 'newest',     label: tx.sort_newest },
+    { value: 'price-asc',  label: tx.sort_price_asc },
+    { value: 'price-desc', label: tx.sort_price_desc },
+    { value: 'alpha',      label: tx.sort_alpha },
+  ];
+
   useEffect(() => {
     const c = params.get('cat');
-    if (c && CATS.includes(c)) setCat(c);
+    if (c && CATS_KEYS.includes(c)) setCat(c);
   }, [params]);
 
   const changecat = (c) => {
@@ -40,71 +44,65 @@ export default function Shop() {
       const oc = cat === 'All' || b.category === cat;
       return ok && oc;
     });
-
     if (sort === 'price-asc')  r = [...r].sort((a,b) => (Number(a.price)||0) - (Number(b.price)||0));
     if (sort === 'price-desc') r = [...r].sort((a,b) => (Number(b.price)||0) - (Number(a.price)||0));
     if (sort === 'alpha')      r = [...r].sort((a,b) => a.title?.localeCompare(b.title));
     return r;
   }, [books, search, cat, sort]);
 
+  // Display label for "All" category in current language
+  const catLabel = (c) => c === 'All' ? tx.cat_all : c;
+
   return (
     <div className="page shop">
-      {/* Header */}
       <div className="shop__head">
         <div className="container shop__head-inner">
           <div>
-            <p className="section-eyebrow">Our Collection</p>
-            <h1 className="section-title">Browse <em>Books</em></h1>
+            <p className="section-eyebrow">{tx.shop_collection}</p>
+            <h1 className="section-title">{tx.shop_title} <em>{tx.shop_title_em}</em></h1>
           </div>
-          <p className="shop__count">{loading ? '…' : `${filtered.length} book${filtered.length !== 1 ? 's' : ''}`}</p>
+          <p className="shop__count">
+            {loading ? '…' : `${filtered.length} ${tx.books_label}`}
+          </p>
         </div>
       </div>
 
       <div className="container shop__body">
-        {/* Controls */}
         <div className="shop__controls">
-          {/* Search */}
           <div className="shop__search-wrap">
             <svg className="shop__search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             <input
               className="shop__search"
               type="text"
-              placeholder="Search by title or author…"
+              placeholder={tx.search_placeholder}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
-            {search && (
-              <button className="shop__search-clear" onClick={() => setSearch('')}>✕</button>
-            )}
+            {search && <button className="shop__search-clear" onClick={() => setSearch('')}>✕</button>}
           </div>
-
-          {/* Sort */}
           <select className="shop__sort" value={sort} onChange={e => setSort(e.target.value)}>
             {SORTS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
           </select>
         </div>
 
-        {/* Category pills */}
         <div className="shop__cats">
-          {CATS.map(c => (
+          {CATS_KEYS.map(c => (
             <button
               key={c}
               className={`shop__cat-btn ${cat === c ? 'active' : ''}`}
               onClick={() => changecat(c)}
             >
-              {c}
+              {catLabel(c)}
             </button>
           ))}
         </div>
 
-        {/* Active search label */}
         {search && (
           <p className="shop__search-label">
-            Results for "<strong>{search}</strong>" — {filtered.length} found
+            {tx.results_for} "<strong>{search}</strong>" — {filtered.length} {tx.found}
           </p>
         )}
 
-        {/* Grid */}
         <div className="shop__grid">
           {loading
             ? Array.from({ length: 12 }).map((_, i) => <BookCardSkeleton key={i} />)
@@ -113,8 +111,8 @@ export default function Shop() {
               : (
                 <div className="empty-state" style={{ gridColumn: '1/-1' }}>
                   <div className="empty-state__icon">🔍</div>
-                  <h3>No books found</h3>
-                  <p>Try a different search term or category.</p>
+                  <h3>{tx.no_results}</h3>
+                  <p>{tx.no_results_sub}</p>
                 </div>
               )
           }

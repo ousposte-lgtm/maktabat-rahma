@@ -1,4 +1,4 @@
-// src/pages/Home.jsx
+// src/pages/Home.jsx — fully translated
 import { Link } from 'react-router-dom';
 import FeaturedCard from '../components/FeaturedCard';
 import BookCard, { BookCardSkeleton } from '../components/BookCard';
@@ -19,12 +19,9 @@ export default function Home() {
   const { lang } = useTheme();
   const tx = t[lang];
 
-  // Featured: only is_featured=true books; fallback to first 4 if none
   const featuredBooks = books.filter(b => b.is_featured);
   const featured = featuredBooks.length > 0 ? featuredBooks.slice(0, 8) : [];
-  const showFeaturedFallback = !loading && featuredBooks.length === 0;
-
-  // Regular books for the lower grid (skip featured ones, show rest)
+  const showFallback = !loading && featuredBooks.length === 0;
   const regularBooks = books.filter(b => !b.is_featured).slice(0, 8);
 
   return (
@@ -82,79 +79,75 @@ export default function Home() {
         <div className="home-marquee__track">
           {MARQUEE_ITEMS.map((item, i) => (
             <span key={i} className="home-marquee__item">
-              <span className="home-marquee__dot" />
-              {item}
+              <span className="home-marquee__dot" />{item}
             </span>
           ))}
         </div>
       </div>
 
       {/* ── 2. Featured Books ── */}
-      {(loading || featured.length > 0 || showFeaturedFallback) && (
-        <section className="home-featured">
-          <div className="container">
-            <div className="home-featured__header">
-              <div className="home-featured__title-block">
-                <span className="section-eyebrow">{tx.our_collection}</span>
-                <h2 className="section-title">
-                  {tx.featured_books}{' '}
-                  <em className="section-title-em">{tx.featured_em}</em>
-                </h2>
-                <p className="home-featured__subtitle">Discover our hand-picked top reads</p>
-              </div>
-              <Link to="/shop" className="btn btn-outline home-featured__view-all">{tx.view_all}</Link>
+      <section className="home-featured">
+        <div className="container">
+          <div className="home-featured__header">
+            <div className="home-featured__title-block">
+              <span className="section-eyebrow">{tx.our_collection}</span>
+              <h2 className="section-title">
+                {tx.featured_books} <em className="section-title-em">{tx.featured_em}</em>
+              </h2>
+              <p className="home-featured__subtitle">
+                {lang === 'ar' ? 'اكتشف أفضل اختياراتنا' : lang === 'fr' ? 'Découvrez nos meilleures sélections' : 'Discover our hand-picked top reads'}
+              </p>
             </div>
-
-            {/* Premium featured grid — uses FeaturedCard */}
-            {loading ? (
-              <div className="home-featured-grid">
-                {Array.from({ length: 4 }).map((_, i) => <BookCardSkeleton key={i} />)}
-              </div>
-            ) : featured.length > 0 ? (
-              <div className="home-featured-grid">
-                {featured.map((book, i) => (
-                  <FeaturedCard key={book.id} book={book} delay={i * 60} />
-                ))}
-              </div>
-            ) : (
-              /* Fallback: no featured products — show normal grid */
-              <div className="home-grid">
-                {books.slice(0, 8).map((book, i) => (
-                  <BookCard key={book.id} book={book} delay={i * 55} />
-                ))}
-              </div>
-            )}
+            <Link to="/shop" className="btn btn-outline home-featured__view-all">{tx.view_all}</Link>
           </div>
-        </section>
-      )}
+
+          {loading ? (
+            <div className="home-featured-grid">
+              {Array.from({ length: 4 }).map((_, i) => <BookCardSkeleton key={i} />)}
+            </div>
+          ) : featured.length > 0 ? (
+            <div className="home-featured-grid">
+              {featured.map((book, i) => <FeaturedCard key={book.id} book={book} delay={i * 60} />)}
+            </div>
+          ) : showFallback ? (
+            <div className="home-grid">
+              {books.slice(0, 8).map((book, i) => <BookCard key={book.id} book={book} delay={i * 55} />)}
+            </div>
+          ) : null}
+        </div>
+      </section>
 
       {/* ── 3. About snippet ── */}
       <section className="home-about-strip">
         <div className="container home-about-strip__inner">
           <div className="home-about-strip__quote">
             <span className="home-about-strip__ar">اقرأ بسم ربك</span>
-            <span className="home-about-strip__verse">Read in the name of your Lord</span>
-            <span className="home-about-strip__ref">— Quran 96:1</span>
+            <span className="home-about-strip__verse">
+              {lang === 'ar' ? 'اقرأ باسم ربك' : lang === 'fr' ? 'Lis au nom de ton Seigneur' : 'Read in the name of your Lord'}
+            </span>
+            <span className="home-about-strip__ref">— {lang === 'ar' ? 'القرآن ٩٦:١' : 'Quran 96:1'}</span>
           </div>
           <div className="home-about-strip__text">
-            <p className="section-eyebrow">Our Story</p>
-            <h2 className="home-about-strip__title">A library built on <em>knowledge & mercy</em></h2>
-            <p className="home-about-strip__desc">
-              Maktabat Rahma was founded with a simple but profound vision: to make quality books accessible to every reader. We curate Arabic classics, Islamic scholarship, world literature, and contemporary thought — all in one place.
-            </p>
-            <Link to="/about" className="btn btn-outline">Learn More →</Link>
+            <p className="section-eyebrow">{tx.our_story}</p>
+            <h2 className="home-about-strip__title">
+              {tx.about_strip_title} <em>{tx.about_strip_em}</em>
+            </h2>
+            <p className="home-about-strip__desc">{tx.about_strip_desc}</p>
+            <Link to="/about" className="btn btn-outline">{tx.learn_more}</Link>
           </div>
         </div>
       </section>
 
       {/* ── 4. All Books (non-featured) ── */}
-      {regularBooks.length > 0 && (
+      {(loading || regularBooks.length > 0) && (
         <section className="home-featured" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="home-featured__header">
               <div className="home-featured__title-block">
-                <span className="section-eyebrow">The Collection</span>
-                <h2 className="section-title">All <em className="section-title-em">Books</em></h2>
+                <span className="section-eyebrow">{tx.the_collection}</span>
+                <h2 className="section-title">
+                  {tx.all_books} <em className="section-title-em">{tx.all_books_em}</em>
+                </h2>
               </div>
               <Link to="/shop" className="btn btn-outline home-featured__view-all">{tx.view_all}</Link>
             </div>

@@ -1,7 +1,7 @@
-// src/components/FeaturedCard.jsx — Premium card for featured books only
+// src/components/FeaturedCard.jsx — Premium card: View Details only, no add-to-cart
 import { Link } from 'react-router-dom';
-import { useCart } from '../contexts/CartContext';
-import { useState } from 'react';
+import { useTheme } from '../contexts/ThemeContext';
+import { t } from '../i18n/translations';
 import './FeaturedCard.css';
 
 const CAT_COLORS = {
@@ -11,18 +11,9 @@ const CAT_COLORS = {
 };
 
 export default function FeaturedCard({ book, delay = 0 }) {
-  const { addToCart, items } = useCart();
-  const [added, setAdded] = useState(false);
-  const inCart = items.some(i => i.id === book.id);
+  const { lang } = useTheme();
+  const tx = t[lang];
   const catColor = CAT_COLORS[book.category] || '#7c4dbd';
-
-  const handleAdd = (e) => {
-    e.preventDefault();
-    addToCart(book);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
-  };
-
   const priceNum = book.price ? Number(book.price).toFixed(2) : null;
 
   return (
@@ -41,39 +32,34 @@ export default function FeaturedCard({ book, delay = 0 }) {
           <span className="feat-card__cat-dot" style={{ background: catColor }} />
           {book.category}
         </div>
-        {/* Hover overlay — "View Details" */}
+        {/* Hover overlay — "View Details" only */}
         <div className="feat-card__overlay">
-          <span className="feat-card__view">View Details →</span>
+          <span className="feat-card__view">{tx.view_details} →</span>
         </div>
-        {/* Bottom gradient */}
         <div className="feat-card__gradient" />
       </Link>
 
-      {/* Info */}
+      {/* Info — title then price */}
       <div className="feat-card__body">
         <Link to={`/book/${book.id}`} className="feat-card__title">{book.title}</Link>
 
-        <div className="feat-card__footer">
-          {/* Price — MAD small, number large */}
-          <div className="feat-card__price-block">
-            {priceNum ? (
-              <>
-                <span className="feat-card__currency">MAD</span>
-                <span className="feat-card__amount">{priceNum}</span>
-              </>
-            ) : (
-              <span className="feat-card__free">Gratuit</span>
-            )}
-          </div>
-
-          <button
-            className={`feat-card__add ${added ? 'feat-card__add--done' : ''} ${inCart && !added ? 'feat-card__add--in' : ''}`}
-            onClick={handleAdd}
-            title={inCart ? 'Already in cart' : 'Add to cart'}
-          >
-            {added ? '✓' : inCart ? '✓' : '+'}
-          </button>
+        {/* Price: "MAD 300.00 / piece" */}
+        <div className="feat-card__price-block">
+          {priceNum ? (
+            <>
+              <span className="feat-card__currency">MAD</span>
+              <span className="feat-card__amount">{priceNum}</span>
+              <span className="feat-card__piece">/ {tx.piece}</span>
+            </>
+          ) : (
+            <span className="feat-card__free">{tx.gratuit}</span>
+          )}
         </div>
+
+        {/* View Details button — replaces add-to-cart */}
+        <Link to={`/book/${book.id}`} className="feat-card__view-btn">
+          {tx.view_details}
+        </Link>
       </div>
     </div>
   );

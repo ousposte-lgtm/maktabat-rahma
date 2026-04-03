@@ -1,4 +1,7 @@
-/* ── BookCard v3 — clean cards, no overflow issues ── */
+/* ═══════════════════════════════════════════════════
+   BookCard — Standard product card
+   Title → Price "MAD 300.00 / piece" → Add button
+   ═══════════════════════════════════════════════════ */
 
 .book-card {
   background: var(--card-bg);
@@ -6,32 +9,26 @@
   overflow: hidden;
   border: 1px solid var(--border);
   transition: transform 240ms var(--ease), box-shadow 240ms var(--ease), border-color 240ms var(--ease);
-  display: flex;
-  flex-direction: column;
-  /* Ensure card doesn't escape its grid cell */
-  width: 100%;
-  min-width: 0;
+  display: flex; flex-direction: column;
+  width: 100%; min-width: 0;
 }
 .book-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 20px 48px rgba(0,0,0,.4);
   border-color: var(--border-mid);
 }
-[data-theme="light"] .book-card:hover {
-  box-shadow: 0 12px 32px rgba(0,0,0,.12);
-}
+[data-theme="light"] .book-card:hover { box-shadow: 0 12px 32px rgba(0,0,0,.12); }
 
 /* Image */
 .book-card__img-wrap {
   position: relative; overflow: hidden;
-  aspect-ratio: 3/4;
-  display: block; flex-shrink: 0;
+  aspect-ratio: 3/4; display: block; flex-shrink: 0;
 }
 .book-card__img {
   width: 100%; height: 100%; object-fit: cover;
-  transition: transform .5s var(--ease);
+  transition: transform 500ms cubic-bezier(.25,.46,.45,.94);
 }
-.book-card:hover .book-card__img { transform: scale(1.06); }
+.book-card__img-wrap:hover .book-card__img { transform: scale(1.07); }
 
 /* Category badge */
 .book-card__overlay-cat {
@@ -41,50 +38,82 @@
   padding: 3px 10px; border-radius: 4px;
   backdrop-filter: blur(4px);
 }
+[dir="rtl"] .book-card__overlay-cat { left: auto; right: 10px; }
 
 /* Hover overlay */
 .book-card__hover-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.18) 50%, transparent 100%);
+  background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.15) 50%, transparent 100%);
   display: flex; align-items: flex-end; justify-content: center;
-  padding-bottom: 20px;
-  opacity: 0; transition: opacity 240ms var(--ease);
+  padding-bottom: 18px;
+  opacity: 0; transition: opacity 280ms ease;
 }
-.book-card:hover .book-card__hover-overlay { opacity: 1; }
-
+.book-card__img-wrap:hover .book-card__hover-overlay { opacity: 1; }
 .book-card__view-btn {
-  color: #fff; font-size: .75rem; font-weight: 500; letter-spacing: .06em;
-  border: 1px solid rgba(255,255,255,.38);
-  padding: 7px 18px; border-radius: 6px;
-  transform: translateY(8px); transition: transform 240ms var(--ease);
-  background: rgba(255,255,255,.08);
-  backdrop-filter: blur(4px);
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 18px; border-radius: 99px;
+  background: rgba(255,255,255,.92); color: #1a1a2e;
+  font-size: .72rem; font-weight: 700; letter-spacing: .04em;
+  backdrop-filter: blur(8px);
+  transform: translateY(8px); transition: transform 280ms ease;
+  white-space: nowrap;
 }
-.book-card:hover .book-card__view-btn { transform: translateY(0); }
+.book-card__img-wrap:hover .book-card__view-btn { transform: translateY(0); }
 
 /* Body */
 .book-card__body {
-  padding: 14px 16px 16px;
+  padding: 13px 14px 14px;
   display: flex; flex-direction: column; flex: 1;
   background: var(--card-bg);
 }
+[dir="rtl"] .book-card__body { text-align: right; }
+
+/* Title */
 .book-card__title {
   font-family: var(--font-display);
-  font-size: .98rem; font-weight: 500; color: var(--ink);
-  line-height: 1.35;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  margin-bottom: 4px;
-  transition: color 200ms var(--ease);
-  text-decoration: none;
+  font-size: .97rem; font-weight: 500; color: var(--ink);
+  line-height: 1.35; margin-bottom: 3px;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+  transition: color 200ms var(--ease); text-decoration: none;
 }
 .book-card__title:hover { color: var(--plum-text); }
-.book-card__author { font-size: .72rem; color: var(--ink-faint); margin-bottom: 14px; font-style: italic; }
 
+.book-card__author {
+  font-size: .7rem; color: var(--ink-faint);
+  margin-bottom: 8px; font-style: italic;
+}
+
+/* Price block — "MAD 300.00 / piece" */
+.book-card__price-block {
+  display: flex; align-items: baseline; gap: 4px;
+  margin-bottom: 10px; flex-wrap: wrap;
+}
+[dir="rtl"] .book-card__price-block { flex-direction: row-reverse; }
+.book-card__price-currency {
+  font-size: .64rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--plum-text); line-height: 1;
+}
+.book-card__price-amount {
+  font-family: var(--font-display);
+  font-size: 1.12rem; font-weight: 700;
+  color: var(--ink); letter-spacing: .01em; line-height: 1;
+}
+.book-card__price-piece {
+  font-size: .6rem; color: var(--ink-ghost);
+  font-weight: 400; letter-spacing: .02em;
+}
+.book-card__price-free {
+  font-size: .95rem; font-weight: 500; color: var(--green);
+}
+
+/* Footer — add button only */
 .book-card__footer {
   margin-top: auto;
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  display: flex; align-items: center; justify-content: flex-end;
 }
-.book-card__price { font-size: .88rem; font-weight: 600; color: var(--gold-text); }
+[dir="rtl"] .book-card__footer { justify-content: flex-start; }
 
 /* Add button */
 .book-card__add-btn {
@@ -94,8 +123,7 @@
   display: flex; align-items: center; justify-content: center;
   transition: background 200ms var(--ease), transform 200ms var(--ease), box-shadow 200ms var(--ease);
   box-shadow: 0 4px 14px rgba(124,77,189,.4);
-  flex-shrink: 0;
-  border: none; cursor: pointer;
+  flex-shrink: 0; border: none; cursor: pointer;
 }
 .book-card__add-btn:hover { background: #8f5fd4; transform: scale(1.1); }
 .book-card__add-btn.added  { background: #16a34a; }
@@ -103,76 +131,3 @@
 
 /* Skeleton */
 .book-card--skel { pointer-events: none; }
-
-/* ── Fix #9: Hover effects + image zoom ── */
-.book-card__img-wrap {
-  overflow: hidden;
-  display: block;
-  position: relative;
-}
-.book-card__img {
-  transition: transform 500ms cubic-bezier(.25,.46,.45,.94) !important;
-}
-.book-card__img-wrap:hover .book-card__img {
-  transform: scale(1.07) !important;
-}
-.book-card__hover-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.15) 50%, transparent 100%);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 18px;
-  opacity: 0;
-  transition: opacity 300ms ease;
-}
-.book-card__img-wrap:hover .book-card__hover-overlay { opacity: 1; }
-.book-card__view-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 18px;
-  border-radius: 99px;
-  background: rgba(255,255,255,.95);
-  color: #1a1a2e;
-  font-size: .76rem;
-  font-weight: 700;
-  letter-spacing: .04em;
-  backdrop-filter: blur(8px);
-  transform: translateY(8px);
-  transition: transform 300ms ease;
-  white-space: nowrap;
-}
-.book-card__img-wrap:hover .book-card__view-btn { transform: translateY(0); }
-
-/* Fix #2: Refined price in card */
-.book-card__price-block {
-  display: flex;
-  align-items: baseline;
-  gap: 3px;
-}
-.book-card__price-amount {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--gold-text, #c9a227);
-  letter-spacing: -.01em;
-  line-height: 1;
-}
-.book-card__price-currency {
-  font-size: .62rem;
-  font-weight: 500;
-  color: var(--ink-ghost);
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  margin-bottom: 1px;
-}
-.book-card__price-free {
-  font-size: .9rem;
-  font-weight: 500;
-  color: var(--green, #22c55e);
-  letter-spacing: .01em;
-}
-
-/* Featured card — no badge on normal cards */
-.book-card--featured { position: relative; }
