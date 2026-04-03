@@ -85,6 +85,57 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ── 1.5 Image + Description Strip ── */}
+      <section className="home-img-strip">
+        <div className="container home-img-strip__inner">
+          <div className="home-img-strip__img-wrap">
+            <img
+              src="/bookstore.webp"
+              alt="مكتبة رحمة — القراءة نور"
+              className="home-img-strip__img"
+              loading="lazy"
+              onError={e => { e.target.style.display='none'; }}
+            />
+            <div className="home-img-strip__img-overlay" />
+          </div>
+          <div className="home-img-strip__text">
+            <p className="section-eyebrow">
+              {lang === 'ar' ? 'عن المكتبة' : lang === 'fr' ? 'À propos' : 'About Us'}
+            </p>
+            <h2 className="home-img-strip__title">
+              {lang === 'ar'
+                ? <>الكتاب رفيق <em>العقل والروح</em></>
+                : lang === 'fr'
+                ? <>Le livre, compagnon de <em>l'esprit</em></>
+                : <>Books that <em>enrich the mind</em></>
+              }
+            </h2>
+            <p className="home-img-strip__desc">
+              {lang === 'ar'
+                ? 'في مكتبة رحمة، نؤمن بأن القراءة هي أعظم رحلة يقوم بها الإنسان. نختار لك بعناية أفضل الكتب العربية والإسلامية والعالمية — من الأدب الكلاسيكي إلى الفكر المعاصر — لتجد في كل صفحة ما يُنير طريقك.'
+                : lang === 'fr'
+                ? 'Chez Maktabat Rahma, nous croyons que la lecture est le plus grand voyage humain. Nous sélectionnons avec soin les meilleurs ouvrages arabes, islamiques et mondiaux — de la littérature classique à la pensée contemporaine.'
+                : 'At Maktabat Rahma, we believe reading is the greatest journey a person can take. We carefully curate the finest Arabic, Islamic, and world titles — from timeless classics to contemporary thought — so every page illuminates your path.'
+              }
+            </p>
+            <div className="home-img-strip__features">
+              <div className="home-img-strip__feat">
+                <span className="home-img-strip__feat-icon">📚</span>
+                <span>{lang === 'ar' ? '٥٠٠+ كتاب' : lang === 'fr' ? '500+ livres' : '500+ Books'}</span>
+              </div>
+              <div className="home-img-strip__feat">
+                <span className="home-img-strip__feat-icon">🚚</span>
+                <span>{lang === 'ar' ? 'توصيل سريع' : lang === 'fr' ? 'Livraison rapide' : 'Fast Delivery'}</span>
+              </div>
+              <div className="home-img-strip__feat">
+                <span className="home-img-strip__feat-icon">💬</span>
+                <span>{lang === 'ar' ? 'طلب واتساب' : lang === 'fr' ? 'Commande WhatsApp' : 'WhatsApp Order'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── 2. Featured Books ── */}
       <section className="home-featured">
         <div className="container">

@@ -105,30 +105,28 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* ── MOBILE layout: LEFT=Lang+Theme | CENTER=Hamburger | RIGHT=Logo ── */}
+          {/* ── MOBILE layout: LEFT=Logo | RIGHT=Hamburger+Lang+Theme ── */}
           <div className="navbar__mobile-row">
 
-            {/* LEFT: Lang + Theme */}
-            <div className="navbar__mobile-left">
+            {/* LEFT: Logo */}
+            <Link to="/" className="navbar__logo navbar__logo--mobile" onClick={handleNavClick}>
+              <span className="navbar__logo-ar">مكتبة رحمة</span>
+            </Link>
+
+            {/* RIGHT: Hamburger + Lang + Theme */}
+            <div className="navbar__mobile-right">
+              <button
+                className={`navbar__hamburger ${open ? 'open' : ''}`}
+                onClick={() => setOpen(v => !v)}
+                aria-label="Toggle menu" aria-expanded={open}
+              >
+                <span /><span /><span />
+              </button>
               <LangSwitcher dropUp />
               <button className="theme-toggle navbar__mobile-theme" onClick={toggleTheme} aria-label="Toggle theme">
                 {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
               </button>
             </div>
-
-            {/* CENTER: Hamburger */}
-            <button
-              className={`navbar__hamburger ${open ? 'open' : ''}`}
-              onClick={() => setOpen(v => !v)}
-              aria-label="Toggle menu" aria-expanded={open}
-            >
-              <span /><span /><span />
-            </button>
-
-            {/* RIGHT: Logo */}
-            <Link to="/" className="navbar__logo navbar__logo--mobile" onClick={handleNavClick}>
-              <span className="navbar__logo-ar">مكتبة رحمة</span>
-            </Link>
           </div>
 
         </div>

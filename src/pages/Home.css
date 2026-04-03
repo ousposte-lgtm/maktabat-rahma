@@ -384,3 +384,83 @@
   font-size: .84rem; color: var(--ink-ghost); font-style: italic; margin: 0;
 }
 .home-featured__view-all { align-self: flex-end; white-space: nowrap; }
+
+/* ── Image + Description Strip ── */
+.home-img-strip {
+  padding: 80px 0;
+  position: relative;
+}
+.home-img-strip__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+[dir="rtl"] .home-img-strip__inner { direction: rtl; }
+
+/* Image side */
+.home-img-strip__img-wrap {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  box-shadow: 0 12px 48px rgba(0,0,0,.45), 0 0 0 1px rgba(180,141,232,.14);
+}
+[data-theme="light"] .home-img-strip__img-wrap {
+  box-shadow: 0 8px 32px rgba(0,0,0,.12), 0 0 0 1px rgba(124,77,189,.1);
+}
+.home-img-strip__img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 600ms cubic-bezier(.25,.46,.45,.94);
+}
+.home-img-strip__img-wrap:hover .home-img-strip__img { transform: scale(1.04); }
+.home-img-strip__img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(124,77,189,.18) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Text side */
+.home-img-strip__title {
+  font-family: var(--font-arabic), var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700; color: var(--ink);
+  line-height: 1.3; margin: 12px 0 20px;
+}
+.home-img-strip__title em {
+  font-style: normal;
+  color: var(--plum-text);
+}
+.home-img-strip__desc {
+  font-size: .92rem; color: var(--ink-faint);
+  line-height: 1.85; margin-bottom: 28px;
+}
+[dir="rtl"] .home-img-strip__desc { text-align: right; }
+
+.home-img-strip__features {
+  display: flex; gap: 20px; flex-wrap: wrap;
+}
+.home-img-strip__feat {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-mid);
+  border-radius: 99px;
+  font-size: .78rem; font-weight: 600; color: var(--ink-soft);
+}
+.home-img-strip__feat-icon { font-size: .95rem; }
+
+@media (max-width: 860px) {
+  .home-img-strip__inner {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .home-img-strip__img-wrap { aspect-ratio: 16/9; }
+  .home-img-strip { padding: 56px 0; }
+}
+
+@media (max-width: 480px) {
+  .home-img-strip { padding: 40px 0; }
+  .home-img-strip__features { gap: 10px; }
+  .home-img-strip__feat { font-size: .72rem; padding: 6px 12px; }
+}
