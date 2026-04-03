@@ -80,6 +80,17 @@
 .footer__social-btn--tiktok:hover {
   color: #fff; background: #010101; border-color: #010101;
 }
+.footer__social-btn--instagram:hover {
+  color: #fff;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  border-color: transparent;
+}
+.footer__social-btn--telegram:hover {
+  color: #fff; background: #229ED9; border-color: #229ED9;
+}
+.footer__social-btn--whatsapp:hover {
+  color: #fff; background: #25D366; border-color: #25D366;
+}
 
 /* Links columns */
 .footer__links { display: flex; gap: 64px; }

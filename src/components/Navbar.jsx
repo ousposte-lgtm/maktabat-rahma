@@ -1,4 +1,4 @@
-// src/components/Navbar.jsx — Fix #2: Mobile layout: Logo RIGHT | Hamburger CENTER | Lang+Theme LEFT
+// src/components/Navbar.jsx — Mobile: Logo RIGHT | Hamburger CENTER | Lang+Theme LEFT + scroll-to-top on nav
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
@@ -21,7 +21,7 @@ const MoonIcon = () => (
 export default function Navbar() {
   const { itemCount } = useCart();
   const { theme, toggleTheme, lang, setLang } = useTheme();
-  const [open, setOpen]       = useState(false);
+  const [open, setOpen]         = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const location = useLocation();
@@ -34,6 +34,12 @@ export default function Navbar() {
     { to: '/about', label: tx.about },
   ];
 
+  // Scroll to top on any nav click
+  const handleNavClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setOpen(false);
+  };
+
   useEffect(() => { setOpen(false); setLangOpen(false); }, [location]);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 30);
@@ -41,7 +47,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  /* ── Lang Switcher (reusable) ── */
+  /* ── Lang Switcher ── */
   const LangSwitcher = ({ dropUp = false }) => (
     <div className="lang-switcher">
       <button className="lang-switcher__btn" onClick={() => setLangOpen(v => !v)} aria-label="Switch language">
@@ -71,9 +77,7 @@ export default function Navbar() {
         <div className="navbar__inner container">
 
           {/* ── DESKTOP layout ── */}
-
-          {/* Logo — LEFT on desktop */}
-          <Link to="/" className="navbar__logo navbar__logo--desktop">
+          <Link to="/" className="navbar__logo navbar__logo--desktop" onClick={handleNavClick}>
             <span className="navbar__logo-ar">مكتبة رحمة</span>
             <span className="navbar__logo-en">Maktabat Rahma</span>
           </Link>
@@ -83,6 +87,7 @@ export default function Navbar() {
             {NAV_LINKS.map(({ to, label }) => (
               <NavLink key={to} to={to} end={to === '/'}
                 className={({ isActive }) => `navbar__link ${isActive ? 'navbar__link--active' : ''}`}
+                onClick={handleNavClick}
               >
                 {label}
                 {to === '/cart' && itemCount > 0 && (
@@ -107,7 +112,7 @@ export default function Navbar() {
             <div className="navbar__mobile-left">
               <LangSwitcher dropUp />
               <button className="theme-toggle navbar__mobile-theme" onClick={toggleTheme} aria-label="Toggle theme">
-                {theme === 'dark' ? '☀️' : '🌙'}
+                {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
               </button>
             </div>
 
@@ -121,7 +126,7 @@ export default function Navbar() {
             </button>
 
             {/* RIGHT: Logo */}
-            <Link to="/" className="navbar__logo navbar__logo--mobile">
+            <Link to="/" className="navbar__logo navbar__logo--mobile" onClick={handleNavClick}>
               <span className="navbar__logo-ar">مكتبة رحمة</span>
             </Link>
           </div>
@@ -129,13 +134,13 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile drawer — nav links only */}
+      {/* Mobile drawer */}
       <div className={`navbar__drawer ${open ? 'navbar__drawer--open' : ''}`}>
         <nav className="navbar__drawer-links">
           {NAV_LINKS.map(({ to, label }) => (
             <NavLink key={to} to={to} end={to === '/'}
               className={({ isActive }) => `navbar__drawer-link ${isActive ? 'active' : ''}`}
-              onClick={() => setOpen(false)}
+              onClick={handleNavClick}
             >
               {label}
               {to === '/cart' && itemCount > 0 && (

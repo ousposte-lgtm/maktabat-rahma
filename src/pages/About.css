@@ -268,3 +268,139 @@
   .about-stats { grid-template-columns: repeat(2, 1fr); }
   .about-cats { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── Store Image ── */
+.about-store-img-wrap {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(180,141,232,.15);
+  aspect-ratio: 4/3;
+}
+[data-theme="light"] .about-store-img-wrap {
+  box-shadow: 0 8px 32px rgba(0,0,0,.12), 0 0 0 1px rgba(124,77,189,.12);
+}
+.about-store-img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 600ms cubic-bezier(.25,.46,.45,.94);
+}
+.about-store-img-wrap:hover .about-store-img { transform: scale(1.04); }
+.about-store-img-badge {
+  position: absolute; bottom: 16px; left: 16px;
+  background: rgba(8,8,16,.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(180,141,232,.25);
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-family: var(--font-arabic);
+  font-size: 1rem; font-weight: 700;
+  color: #fff;
+}
+[dir="rtl"] .about-store-img-badge { left: auto; right: 16px; }
+[data-theme="light"] .about-store-img-badge {
+  background: rgba(255,255,255,.85);
+  color: var(--ink);
+}
+
+/* ── Delivery Form ── */
+.about-form-wrap {
+  background: var(--surface-2);
+  border: 1px solid var(--border-mid);
+  border-radius: 24px;
+  padding: 48px 52px;
+  max-width: 680px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+.about-form-wrap::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(124,77,189,.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-theme="light"] .about-form-wrap {
+  background: #faf8ff;
+  border-color: rgba(124,77,189,.18);
+}
+
+.about-form-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 36px;
+}
+[dir="rtl"] .about-form-header { flex-direction: row-reverse; }
+.about-form-icon { font-size: 2rem; flex-shrink: 0; margin-top: 2px; }
+.about-form-title {
+  font-family: var(--font-arabic), var(--font-display);
+  font-size: 1.5rem; font-weight: 700; color: var(--ink);
+  margin: 0 0 6px;
+}
+.about-form-subtitle {
+  font-size: .85rem; color: var(--ink-faint);
+  line-height: 1.65; margin: 0;
+}
+
+.about-form {
+  display: flex; flex-direction: column; gap: 20px;
+}
+.about-form__field {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.about-form__label {
+  font-size: .78rem; font-weight: 600; letter-spacing: .05em;
+  color: var(--ink-soft); text-transform: uppercase;
+}
+.about-form__input {
+  width: 100%; padding: 13px 16px;
+  background: var(--deep);
+  border: 1px solid var(--border-mid);
+  border-radius: 12px;
+  color: var(--ink); font-size: .92rem;
+  font-family: inherit;
+  transition: border-color 200ms var(--ease), box-shadow 200ms var(--ease);
+  outline: none;
+  box-sizing: border-box;
+}
+[data-theme="light"] .about-form__input {
+  background: #fff;
+  border-color: rgba(124,77,189,.2);
+}
+.about-form__input::placeholder { color: var(--ink-ghost); }
+.about-form__input:focus {
+  border-color: var(--plum-text);
+  box-shadow: 0 0 0 3px rgba(124,77,189,.15);
+}
+[dir="rtl"] .about-form__input { text-align: right; }
+
+.about-form__submit {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: #25D366;
+  color: #fff;
+  border: none; border-radius: 14px;
+  font-size: .95rem; font-weight: 700;
+  cursor: pointer; margin-top: 8px;
+  transition: all 220ms var(--ease);
+  box-shadow: 0 4px 20px rgba(37,211,102,.35);
+}
+.about-form__submit:hover:not(:disabled) {
+  background: #20b558;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(37,211,102,.45);
+}
+.about-form__submit:disabled {
+  opacity: .45; cursor: not-allowed;
+}
+.about-form__submit.submitted {
+  background: #16a34a;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .about-form-wrap { padding: 32px 24px; border-radius: 18px; }
+  .about-form-header { gap: 12px; }
+  .about-form-title { font-size: 1.2rem; }
+}

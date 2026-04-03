@@ -126,7 +126,7 @@ export const t = {
     found: 'وُجد',
     no_results: 'لا توجد كتب',
     no_results_sub: 'جرب بحثاً أو تصنيفاً مختلفاً.',
-    piece: 'قطعة',
+    piece: 'كتاب',
     // About
     our_story: 'قصتنا',
     about_title: 'عن',
