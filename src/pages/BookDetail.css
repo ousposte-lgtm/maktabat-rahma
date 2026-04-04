@@ -53,10 +53,10 @@
 }
 
 [data-theme="light"] .bd-premium-card {
-  background: linear-gradient(160deg, #f5f0ff 0%, #ede5ff 50%, #f0ebff 100%);
+  background: linear-gradient(160deg, #faf9f6 0%, #f8f6f2 50%, #f5f4f0 100%);
   border-color: rgba(124, 77, 189, 0.12);
   box-shadow:
-    0 2px 0 rgba(124, 77, 189, 0.04) inset,
+    0 2px 0 rgba(0, 0, 0, 0.02) inset,
     0 8px 32px rgba(0, 0, 0, 0.10),
     0 32px 80px rgba(0, 0, 0, 0.06);
 }
@@ -78,9 +78,9 @@
   transition: box-shadow 400ms ease, transform 400ms ease;
 }
 [data-theme="light"] .bd-image-frame {
-  background: linear-gradient(145deg, #e8e0f5, #ddd4f0 60%, #e3d8f8);
+  background: linear-gradient(145deg, #ede9e0, #e5e0d5 60%, #e8e3d8);
   border-color: rgba(124, 77, 189, 0.15);
-  box-shadow: 0 4px 20px rgba(0,0,0,.12), 0 0 40px rgba(124, 77, 189, 0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,.12), 0 0 40px rgba(0, 0, 0, 0.05);
 }
 .bd-image-frame:hover {
   transform: translateY(-3px);
