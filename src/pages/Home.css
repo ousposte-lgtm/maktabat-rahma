@@ -340,7 +340,7 @@
   gap: 16px;
 }
 .home-about-strip__title {
-  font-family: var(--font-display);
+  font-family: system-ui, -apple-system, sans-serif;
   font-size: clamp(1.6rem, 3vw, 2.2rem);
   font-weight: 700;
   color: var(--ink);

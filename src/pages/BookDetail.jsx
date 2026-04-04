@@ -201,7 +201,7 @@ export default function BookDetail() {
                 </span>
               </button>
 
-              <Link to="/cart" className="bd-cart-link">
+              <Link to="/cart" className="bd-cart-link" onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}>
                 {tx.view_cart} <ArrowRightIcon />
               </Link>
 

@@ -166,7 +166,7 @@ input, textarea, select { font-family: var(--font-ui); outline: none; }
 
 .empty-state { text-align: center; padding: 100px 20px; color: var(--ink-faint); display: flex; flex-direction: column; align-items: center; }
 .empty-state__icon { font-size: 3.5rem; margin-bottom: 20px; }
-.empty-state h3 { font-family: var(--font-display); font-size: 1.7rem; color: var(--ink-soft); margin-bottom: 10px; text-align: center; }
+.empty-state h3 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.7rem; color: var(--ink-soft); margin-bottom: 10px; text-align: center; }
 .empty-state p { font-size: .9rem; text-align: center; }
 
 
