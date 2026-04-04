@@ -1,5 +1,5 @@
-// src/pages/BookDetail.jsx — fully translated, premium layout
-import { useState, useEffect } from 'react';
+// src/pages/BookDetail.jsx — with touch swipe slider + dot indicators
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useBooks } from '../contexts/BooksContext';
 import { useCart }  from '../contexts/CartContext';
@@ -29,6 +29,16 @@ const ArrowRightIcon = () => (
     <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
   </svg>
 );
+const ChevronLeftIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+);
+const ChevronRightIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="9 18 15 12 9 6"/>
+  </svg>
+);
 const StarIcon = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
@@ -44,6 +54,114 @@ const CAT_COLORS = {
   'Philosophy':'#7c3aed','Poetry':'#be185d',
 };
 
+/* ── Touch Slider Component ── */
+function ImageSlider({ images, activeImg, setActiveImg, title }) {
+  const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
+  const isDragging  = useRef(false);
+
+  const prev = useCallback(() => {
+    setActiveImg(i => (i - 1 + images.length) % images.length);
+  }, [images.length, setActiveImg]);
+
+  const next = useCallback(() => {
+    setActiveImg(i => (i + 1) % images.length);
+  }, [images.length, setActiveImg]);
+
+  const onTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    isDragging.current = false;
+  };
+
+  const onTouchMove = (e) => {
+    if (!touchStartX.current) return;
+    const dx = Math.abs(e.touches[0].clientX - touchStartX.current);
+    const dy = Math.abs(e.touches[0].clientY - touchStartY.current);
+    // Only treat as horizontal drag if clearly horizontal
+    if (dx > dy && dx > 10) {
+      isDragging.current = true;
+      e.preventDefault(); // prevent page scroll during swipe
+    }
+  };
+
+  const onTouchEnd = (e) => {
+    if (!touchStartX.current || !isDragging.current) {
+      touchStartX.current = null;
+      return;
+    }
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 40) {
+      dx < 0 ? next() : prev();
+    }
+    touchStartX.current = null;
+    isDragging.current = false;
+  };
+
+  const currentImg = images[activeImg] || images[0];
+  const hasMultiple = images.length > 1;
+
+  return (
+    <div className="bd-slider">
+      {/* Main image area */}
+      <div
+        className="bd-slider__track"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        <img
+          src={currentImg}
+          alt={`${title} ${activeImg + 1}`}
+          className="bd-slider__img"
+          key={activeImg}
+          onError={e => { e.target.src = 'https://placehold.co/480x640/1a1a2e/b48de8?text=📖'; }}
+        />
+
+        {/* Desktop arrow buttons */}
+        {hasMultiple && (
+          <>
+            <button className="bd-slider__arrow bd-slider__arrow--prev" onClick={prev} aria-label="Previous image">
+              <ChevronLeftIcon />
+            </button>
+            <button className="bd-slider__arrow bd-slider__arrow--next" onClick={next} aria-label="Next image">
+              <ChevronRightIcon />
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Dot indicators */}
+      {hasMultiple && (
+        <div className="bd-slider__dots">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              className={`bd-slider__dot ${i === activeImg ? 'bd-slider__dot--active' : ''}`}
+              onClick={() => setActiveImg(i)}
+              aria-label={`Go to image ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Thumbnails row (desktop) */}
+      {hasMultiple && (
+        <div className="bd-thumbnails">
+          {images.map((img, i) => (
+            <button key={i}
+              className={`bd-thumb-btn ${i === activeImg ? 'bd-thumb-btn--active' : ''}`}
+              onClick={() => setActiveImg(i)}>
+              <img src={img} alt={`${title} ${i + 1}`}
+                onError={e => { e.target.src = 'https://placehold.co/80x110/1a1a2e/b48de8?text=📖'; }} />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function BookDetail() {
   const { id }   = useParams();
   const navigate = useNavigate();
@@ -52,14 +170,16 @@ export default function BookDetail() {
   const { lang } = useTheme();
   const tx = t[lang];
 
-  const [added, setAdded]     = useState(false);
+  const [added, setAdded]         = useState(false);
   const [activeImg, setActiveImg] = useState(0);
 
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [id]);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setActiveImg(0); // reset slider when book changes
+  }, [id]);
 
   const book   = getBookById(id);
   const inCart = items.some(i => i.id === id);
-
   const handleAdd = () => { addToCart(book); setAdded(true); setTimeout(() => setAdded(false), 2200); };
 
   if (booksLoading) return (
@@ -79,13 +199,12 @@ export default function BookDetail() {
     </div>
   );
 
-  const catColor  = CAT_COLORS[book.category] || '#7c4dbd';
+  const catColor = CAT_COLORS[book.category] || '#7c4dbd';
   const images = (() => {
     if (book.images?.length) return book.images.filter(Boolean);
     if (book.image_url) return [book.image_url];
     return ['https://placehold.co/480x640/1a1a2e/b48de8?text=📖'];
   })();
-  const currentImg = images[activeImg] || images[0];
   const priceNum = book.price ? Number(book.price).toFixed(2) : null;
 
   return (
@@ -103,35 +222,27 @@ export default function BookDetail() {
           <span className="bd-breadcrumb__current">{book.title}</span>
         </nav>
 
-        {/* Premium Card */}
         <div className="bd-premium-card">
 
-          {/* LEFT — Image */}
+          {/* LEFT — Image Slider */}
           <div className="bd-image-col">
-            <div className="bd-image-frame">
-              {book.category && <div className="bd-image-badge" style={{ background: catColor }}>{book.category}</div>}
-              <img src={currentImg} alt={book.title} className="bd-image"
-                onError={e => { e.target.src = 'https://placehold.co/480x640/1a1a2e/b48de8?text=📖'; }} />
-            </div>
-
-            {images.length > 1 && (
-              <div className="bd-thumbnails">
-                {images.map((img, i) => (
-                  <button key={i}
-                    className={`bd-thumb-btn ${i === activeImg ? 'bd-thumb-btn--active' : ''}`}
-                    onClick={() => setActiveImg(i)}>
-                    <img src={img} alt={`${book.title} ${i+1}`}
-                      onError={e => { e.target.src = 'https://placehold.co/80x110/1a1a2e/b48de8?text=📖'; }} />
-                  </button>
-                ))}
+            {/* Category badge above slider */}
+            {book.category && (
+              <div className="bd-image-badge-standalone" style={{ background: catColor }}>
+                {book.category}
               </div>
             )}
+            <ImageSlider
+              images={images}
+              activeImg={activeImg}
+              setActiveImg={setActiveImg}
+              title={book.title}
+            />
           </div>
 
           {/* RIGHT — Details */}
           <div className="bd-info">
 
-            {/* Tag */}
             {book.category && (
               <div className="bd-tag">
                 <span className="bd-tag__line" style={{ background: catColor }} />
@@ -140,10 +251,8 @@ export default function BookDetail() {
               </div>
             )}
 
-            {/* Title */}
             <h1 className="bd-title">{book.title}</h1>
 
-            {/* Author */}
             {book.author && (
               <p className="bd-author">
                 <span className="bd-author__by">{tx.by_author}</span>
@@ -151,7 +260,6 @@ export default function BookDetail() {
               </p>
             )}
 
-            {/* Stars */}
             <div className="bd-rating">
               {[1,2,3,4,5].map(n => (
                 <span key={n} className={`bd-star ${n <= 4 ? 'bd-star--filled' : 'bd-star--empty'}`}><StarIcon /></span>
@@ -159,7 +267,7 @@ export default function BookDetail() {
               <span className="bd-rating__count">(4.0)</span>
             </div>
 
-            {/* Price — "MAD 300.00 / piece" */}
+            {/* Price — MAD always first */}
             <div className="bd-price-wrap">
               {priceNum ? (
                 <div className="bd-price-row">
@@ -175,12 +283,10 @@ export default function BookDetail() {
               </span>
             </div>
 
-            {/* Description */}
             {book.description && <p className="bd-desc">{book.description}</p>}
 
             <div className="bd-divider" />
 
-            {/* Trust */}
             <div className="bd-trust-row">
               <div className="bd-trust-item"><TruckIcon /><span>{tx.fast_delivery}</span></div>
               <div className="bd-trust-item"><ShieldIcon /><span>{tx.secure_order}</span></div>
@@ -189,7 +295,6 @@ export default function BookDetail() {
 
             <div className="bd-divider" />
 
-            {/* Buttons */}
             <div className="bd-actions">
               <button
                 className={`bd-add-btn ${added ? 'bd-add-btn--success' : ''} ${inCart && !added ? 'bd-add-btn--incart' : ''}`}
@@ -210,7 +315,6 @@ export default function BookDetail() {
               </button>
             </div>
 
-            {/* Toast */}
             {added && (
               <div className="bd-toast scale-in" role="alert">
                 <CheckIcon />
@@ -219,7 +323,6 @@ export default function BookDetail() {
               </div>
             )}
 
-            {/* Meta */}
             <div className="bd-meta">
               {book.category && (
                 <div className="bd-meta__row">

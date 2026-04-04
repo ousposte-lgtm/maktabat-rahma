@@ -342,7 +342,7 @@ export default function Admin() {
                     </td>
                     <td>{book.category && <span className="badge badge-plum">{book.category}</span>}</td>
                     <td className="admin-table__price">
-                      {book.price ? `${Number(book.price).toFixed(2)} MAD` : <span style={{color:'var(--ink-ghost)'}}>—</span>}
+                      {book.price ? `MAD ${Number(book.price).toFixed(2)}` : <span style={{color:'var(--ink-ghost)'}}>—</span>}
                     </td>
                     <td>
                       <span className={`admin-featured-badge ${book.is_featured ? 'admin-featured-badge--on' : ''}`}>

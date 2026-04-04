@@ -351,3 +351,124 @@
 }
 
 /* ── Fix #5: RTL title alignment ── */
+
+/* ═══════════════════════════════════════════════
+   IMAGE SLIDER — Touch swipe + dots + arrows
+   ═══════════════════════════════════════════════ */
+
+.bd-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Slider track — holds the image + arrow buttons */
+.bd-slider__track {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: linear-gradient(145deg, #1e1a40, #141228);
+  border: 1px solid rgba(180, 141, 232, 0.12);
+  box-shadow: 0 4px 20px rgba(0,0,0,.5), 0 0 60px rgba(124,77,189,.08);
+  cursor: grab;
+  touch-action: pan-y; /* allow vertical scroll, intercept horizontal swipe */
+  user-select: none;
+}
+.bd-slider__track:active { cursor: grabbing; }
+[data-theme="light"] .bd-slider__track {
+  background: linear-gradient(145deg, #ddd4f5, #cfc3f0);
+  border-color: rgba(124,77,189,.15);
+}
+
+/* Main image — animates on change */
+.bd-slider__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  animation: sliderFadeIn 280ms ease both;
+  pointer-events: none;
+}
+@keyframes sliderFadeIn {
+  from { opacity: 0; transform: scale(1.03); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Desktop prev/next arrow buttons */
+.bd-slider__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255,255,255,.18);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: background 200ms ease, transform 200ms ease, opacity 200ms ease;
+  opacity: 0;
+}
+.bd-slider__track:hover .bd-slider__arrow { opacity: 1; }
+.bd-slider__arrow:hover {
+  background: rgba(124,77,189,.8);
+  transform: translateY(-50%) scale(1.08);
+}
+.bd-slider__arrow--prev { left: 10px; }
+.bd-slider__arrow--next { right: 10px; }
+
+/* Always show arrows on touch devices */
+@media (hover: none) {
+  .bd-slider__arrow { opacity: 0.7; }
+}
+
+/* Dot indicators */
+.bd-slider__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+.bd-slider__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(180,141,232,.3);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 250ms ease, transform 250ms ease, width 250ms ease;
+}
+.bd-slider__dot--active {
+  background: var(--plum-text);
+  transform: scale(1.2);
+  width: 22px;
+  border-radius: 4px;
+}
+.bd-slider__dot:hover:not(.bd-slider__dot--active) {
+  background: rgba(180,141,232,.6);
+}
+
+/* Category badge standalone (above slider) */
+.bd-image-badge-standalone {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #fff;
+  width: fit-content;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  margin-bottom: 4px;
+}

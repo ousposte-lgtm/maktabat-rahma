@@ -189,3 +189,14 @@ input, textarea, select { font-family: var(--font-ui); outline: none; }
 .lang-ar textarea, .lang-ar label, .lang-ar li {
   letter-spacing: 0 !important;
 }
+
+/* ── Price MAD prefix — consistent across all pages ── */
+.price-mad {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--plum-text);
+  margin-right: 2px;
+  font-family: system-ui, -apple-system, sans-serif;
+}

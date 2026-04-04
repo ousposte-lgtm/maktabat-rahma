@@ -773,3 +773,94 @@
   .admin-modal__body { grid-template-columns: 1fr; }
   .admin-modal__preview-col { position: static; }
 }
+
+/* ═══════════════════════════════════════════════
+   ADMIN MOBILE FIX — Responsive buttons & layout
+   ═══════════════════════════════════════════════ */
+
+/* Topbar: stack vertically on small screens */
+@media (max-width: 600px) {
+  .admin-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .admin-topbar__add {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Table action buttons: stack + full width */
+  .admin-table__actions {
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+    min-width: 80px;
+  }
+  .admin-btn-edit,
+  .admin-btn-delete {
+    width: 100%;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: .75rem;
+  }
+
+  /* Stats grid: 2 columns on small */
+  .admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  /* Controls: stack search + filter */
+  .admin-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .admin-search-wrap {
+    min-width: unset;
+    width: 100%;
+  }
+  .admin-filter {
+    width: 100%;
+  }
+
+  /* Table: allow horizontal scroll, don't hide buttons */
+  .admin-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .admin-table {
+    min-width: 500px;
+  }
+  .admin-table__actions {
+    flex-direction: row;
+    min-width: unset;
+  }
+  .admin-btn-edit,
+  .admin-btn-delete {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  /* Modal full width */
+  .admin-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0;
+    border-radius: 16px 16px 0 0;
+    max-height: 92vh;
+  }
+  .admin-modal-backdrop {
+    align-items: flex-end;
+  }
+  .admin-modal__body {
+    grid-template-columns: 1fr !important;
+    max-height: calc(92vh - 120px);
+  }
+}
+
+@media (max-width: 400px) {
+  .admin-main { padding: 16px 12px 80px; }
+  .admin-stat-card { padding: 14px 10px !important; }
+  .admin-stat-card__val { font-size: 1.5rem !important; }
+}

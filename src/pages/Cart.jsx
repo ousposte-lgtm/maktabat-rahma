@@ -136,7 +136,7 @@ export default function Cart() {
                     <span className="cart-item__qty-num">{item.qty}</span>
                     <button className="cart-item__qty-btn" onClick={() => updateQty(item.id, item.qty + 1)} aria-label="Increase">+</button>
                   </div>
-                  <span className="cart-item__price">{(Number(item.price || 0) * item.qty).toFixed(2)} MAD</span>
+                  <span className="cart-item__price"><span className="price-mad">MAD</span> {(Number(item.price || 0) * item.qty).toFixed(2)}</span>
                   <button className="cart-item__remove" onClick={() => removeFromCart(item.id)} aria-label="Remove">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
                   </button>
@@ -155,14 +155,14 @@ export default function Cart() {
                   <span className="cart__summary-line-title">
                     {item.title} <span className="cart__summary-line-qty">×{item.qty}</span>
                   </span>
-                  <span>{(Number(item.price || 0) * item.qty).toFixed(2)} MAD</span>
+                  <span><span className="price-mad">MAD</span> {(Number(item.price || 0) * item.qty).toFixed(2)}</span>
                 </div>
               ))}
             </div>
             <div className="cart__summary-divider" />
             <div className="cart__summary-total">
               <span>{s.total}</span>
-              <span className="cart__summary-total-num">{total.toFixed(2)} MAD</span>
+              <span className="cart__summary-total-num"><span className="price-mad">MAD</span> {total.toFixed(2)}</span>
             </div>
 
             {/* ── Delivery Form ── */}
