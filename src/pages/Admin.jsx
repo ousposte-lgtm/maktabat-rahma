@@ -1,6 +1,6 @@
 // src/pages/Admin.jsx — v4 (multi-image, featured toggle, improved UI)
 import { useState, useEffect, useRef } from 'react';
-import { supabase, ADMIN_EMAIL, uploadCoverImage } from '../supabase';
+import { supabase, ADMIN_EMAIL, uploadCoverImage, uploadMultipleImages, validateImageFile } from '../supabase';
 import { useBooks } from '../hooks/useBooks';
 import './Admin.css';
 
@@ -91,9 +91,24 @@ export default function Admin() {
   };
 
   const addImageFiles = (files) => {
-    const newImgs = Array.from(files).filter(f => f.type.startsWith('image/'))
-      .map(f => ({ file: f, url: '', preview: URL.createObjectURL(f) }));
-    setForm(prev => ({ ...prev, images: [...prev.images, ...newImgs] }));
+    const newImgs = [];
+    const rejected = [];
+
+    Array.from(files).forEach(f => {
+      const { valid, reason } = validateImageFile(f);
+      if (valid) {
+        newImgs.push({ file: f, url: '', preview: URL.createObjectURL(f) });
+      } else {
+        rejected.push(`"${f.name}": ${reason}`);
+      }
+    });
+
+    if (rejected.length > 0) {
+      error('Skipped: ' + rejected.join(' | '));
+    }
+    if (newImgs.length > 0) {
+      setForm(prev => ({ ...prev, images: [...prev.images, ...newImgs] }));
+    }
   };
 
   const addImageUrl = (url) => {
@@ -154,31 +169,60 @@ export default function Admin() {
     e.preventDefault();
     if (!validate()) return;
     setSaving(true); setUploadProgress(0);
+
     try {
-      const uploaded = [];
-      const fileImgs = form.images.filter(i => i.file);
-      let done = 0;
-      for (const img of form.images) {
-        if (img.file) {
-          setUploadProgress(Math.round((done / Math.max(fileImgs.length, 1)) * 90));
-          uploaded.push(await uploadCoverImage(img.file));
-          done++;
-        } else if (img.url) {
-          uploaded.push(img.url);
+      // Separate files that need uploading from URLs that are already hosted
+      const fileImages = form.images.filter(img => img.file);
+      const urlImages  = form.images.filter(img => !img.file && img.url);
+
+      // Upload all file images using the robust batch helper
+      // onProgress fires after each file completes
+      const uploadedFileUrls = await uploadMultipleImages(
+        fileImages.map(img => img.file),
+        {
+          onProgress: (done, total) => {
+            // 0–90% = uploading files
+            setUploadProgress(Math.round((done / Math.max(total, 1)) * 90));
+          },
+          onError: (msg) => {
+            // Show per-file errors as warnings but continue
+            error(msg);
+          },
         }
-      }
-      setUploadProgress(95);
+      );
+
+      setUploadProgress(92);
+
+      // Rebuild the full ordered image URL list maintaining the user's order
+      // Replace file-slots with their uploaded URLs, keep url-slots as-is
+      let fileUrlIdx = 0;
+      const uploaded = form.images.map(img => {
+        if (img.file) {
+          // This slot was a file — use the uploaded URL (may be undefined if it failed)
+          return uploadedFileUrls[fileUrlIdx++] || null;
+        }
+        return img.url || null;
+      }).filter(Boolean); // remove any failed/null slots
+
+      setUploadProgress(97);
+
+      // Determine primary cover URL (respect mainImageIndex)
       const primaryUrl = uploaded[form.mainImageIndex] || uploaded[0] || '';
+
       const payload = {
-        title: form.title.trim(), author: form.author.trim() || null,
-        price: form.price !== '' ? Number(form.price) : null,
+        title:       form.title.trim(),
+        author:      form.author.trim() || null,
+        price:       form.price !== '' ? Number(form.price) : null,
         description: form.description.trim() || null,
-        category: form.category, imageUrl: primaryUrl,
-        images: uploaded.length ? uploaded : null,
+        category:    form.category,
+        imageUrl:    primaryUrl,
+        images:      uploaded.length ? uploaded : null,
         is_featured: form.is_featured,
       };
+
       if (editingId) { await updateBook(editingId, payload); success('Book updated!'); }
       else           { await addBook(payload);                success('Book added!'); }
+
       setUploadProgress(100);
       closeModal();
     } catch (err) {
@@ -454,7 +498,7 @@ export default function Admin() {
                       onChange={e => { addImageFiles(e.target.files); e.target.value = ''; }} />
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                     <span>Click or drag & drop images</span>
-                    <span className="admin-upload-zone__hint">Multiple files · PNG, JPG, WEBP · max 5 MB each</span>
+                    <span className="admin-upload-zone__hint">Multiple files · PNG, JPG, WEBP · max 8 MB each</span>
                   </div>
 
                   {uploadProgress !== null && (
