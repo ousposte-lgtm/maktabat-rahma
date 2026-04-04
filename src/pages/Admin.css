@@ -501,6 +501,9 @@
   .admin-modal__preview-col { display: none; }
   .admin-modal__row { grid-template-columns: 1fr; }
   .admin-stats { grid-template-columns: repeat(2,1fr); gap: 12px; }
+  /* Ensure table scrolls horizontally so action buttons are never hidden */
+  .admin-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .admin-table { min-width: 520px; }
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -523,7 +526,9 @@
   border: 1px solid var(--border-mid) !important;
   box-shadow: 0 2px 16px rgba(0,0,0,.16) !important;
   border-radius: 16px !important;
-  overflow: hidden !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
 }
 .admin-table thead th {
   background: var(--surface-2) !important;
@@ -790,21 +795,6 @@
     justify-content: center;
   }
 
-  /* Table action buttons: stack + full width */
-  .admin-table__actions {
-    flex-direction: column;
-    gap: 6px;
-    align-items: stretch;
-    min-width: 80px;
-  }
-  .admin-btn-edit,
-  .admin-btn-delete {
-    width: 100%;
-    justify-content: center;
-    padding: 7px 10px;
-    font-size: .75rem;
-  }
-
   /* Stats grid: 2 columns on small */
   .admin-stats {
     grid-template-columns: repeat(2, 1fr);
@@ -824,22 +814,30 @@
     width: 100%;
   }
 
-  /* Table: allow horizontal scroll, don't hide buttons */
+  /* Table: horizontal scroll so buttons never get clipped */
   .admin-table-wrap {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
   .admin-table {
-    min-width: 500px;
+    min-width: 480px;
   }
+
+  /* Action buttons: side by side, never overflow */
   .admin-table__actions {
+    display: flex;
     flex-direction: row;
-    min-width: unset;
+    flex-wrap: nowrap;
+    gap: 6px;
+    justify-content: flex-end;
+    align-items: center;
   }
   .admin-btn-edit,
   .admin-btn-delete {
-    width: auto;
+    flex: 0 0 auto;
     white-space: nowrap;
+    padding: 6px 10px;
+    font-size: .74rem;
   }
 
   /* Modal full width */
