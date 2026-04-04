@@ -258,14 +258,7 @@
   .navbar__logo--mobile:hover .navbar__logo-ar { color: var(--plum-text); }
 }
 
-/* ═══════════════════════════════
-   RTL desktop adjustments
-   ═══════════════════════════════ */
-[dir="rtl"] .navbar__logo--desktop { margin-right: 0; margin-left: 40px; }
-[dir="rtl"] .navbar__controls--desktop { margin-left: 0; margin-right: auto; }
-[dir="rtl"] .navbar__link--active::after { left: auto; right: 50%; transform: translateX(50%); }
-[dir="rtl"] .lang-switcher__dropdown { right: auto; left: 0; }
-[dir="rtl"] .lang-switcher__option { text-align: right; }
+/* Arabic: layout unchanged from EN/FR */
 
 @keyframes scaleIn   { from { opacity:0; transform:scale(.9) } to { opacity:1; transform:scale(1) } }
 @keyframes slideDown { from { opacity:0; transform:translateY(-8px) } to { opacity:1; transform:translateY(0) } }

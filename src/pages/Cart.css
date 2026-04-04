@@ -20,9 +20,6 @@
   display: inline-flex; align-items: center; gap: 8px;
   margin: 0 auto;
 }
-[dir="rtl"] .cart__empty { text-align: center; }
-[dir="rtl"] .cart__empty-title { text-align: center; }
-[dir="rtl"] .cart__empty-desc { text-align: center; }
 
 /* ─ Layout wrapper ─ */
 .cart__layout {
@@ -168,7 +165,6 @@
 .cart__delivery-form-header {
   display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;
 }
-[dir="rtl"] .cart__delivery-form-header { flex-direction: row-reverse; }
 .cart__delivery-form-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
 .cart__delivery-form-title {
   font-size: .9rem; font-weight: 700; color: var(--ink);
@@ -199,7 +195,6 @@
   border-color: var(--plum-text);
   box-shadow: 0 0 0 3px rgba(124,77,189,.12);
 }
-[dir="rtl"] .cart__field-input { text-align: right; }
 
 /* WhatsApp button submitted state */
 .cart__whatsapp-btn.submitted { background: #16a34a; pointer-events: none; }

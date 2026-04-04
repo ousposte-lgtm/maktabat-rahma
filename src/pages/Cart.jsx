@@ -6,7 +6,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { t } from '../i18n/translations';
 import './Cart.css';
 
-const WA_LINK = 'https://wa.me/message/AUV2I33UDGMRM1';
+const WA_LINK = 'https://wa.me/212608755373';  // Direct number — supports ?text= pre-fill
 
 export default function Cart() {
   const { items, removeFromCart, updateQty, clearCart, total, itemCount } = useCart();
@@ -51,24 +51,35 @@ export default function Cart() {
     // Guard: do nothing if form is not filled or cart is empty
     if (!formFilled || items.length === 0) return;
 
+    // Build order lines
     const lines = items.map((item, i) =>
-      `${i + 1}. *${item.title}*${item.author ? ` — ${item.author}` : ''}\n` +
-      `   Qty: ${item.qty} × ${Number(item.price || 0).toFixed(2)} MAD`
+      `${i + 1}. ${item.title}${item.author ? ` — ${item.author}` : ''}\n` +
+      `   Qty: ${item.qty} x ${Number(item.price || 0).toFixed(2)} MAD`
     );
 
-    const msg =
-      `🌟 *New Order — مكتبة رحمة*\n\n` +
-      lines.join('\n\n') +
-      `\n\n──────────────────\n` +
-      `📦 Items: ${itemCount}\n` +
-      `💰 *Total: ${total.toFixed(2)} MAD*\n\n` +
-      `📋 *معلومات التوصيل:*\n` +
-      `👤 الاسم: ${form.name.trim()}\n` +
-      `🏠 العنوان: ${form.address.trim()}\n` +
-      `🏙️ المدينة: ${form.city.trim()}\n\n` +
-      `Please confirm this order. Thank you! 🙏`;
+    // Build the full message with all required fields
+    const msg = [
+      'طلب جديد - مكتبة رحمة',
+      '',
+      '--- بيانات التوصيل ---',
+      `الاسم: ${form.name.trim()}`,
+      `العنوان: ${form.address.trim()}`,
+      `المدينة: ${form.city.trim()}`,
+      '',
+      '--- الطلب ---',
+      ...lines,
+      '',
+      '---',
+      `المجموع: ${total.toFixed(2)} MAD`,
+      `عدد الكتب: ${itemCount}`,
+    ].join('\n');
 
-    window.open(`${WA_LINK}?text=${encodeURIComponent(msg)}`, '_blank');
+    // URL-encode the message and append to the WhatsApp link
+    const encoded = encodeURIComponent(msg);
+    // wa.me/message/ custom links support ?text= for pre-filling
+    const url = `${WA_LINK}?text=${encoded}`;
+
+    window.open(url, '_blank');
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
   };

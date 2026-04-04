@@ -182,4 +182,3 @@
   display: flex;
   flex-direction: column;
 }
-[dir="rtl"] .shop__grid .empty-state { text-align: center !important; }

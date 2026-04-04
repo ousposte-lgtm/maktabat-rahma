@@ -351,10 +351,3 @@
 }
 
 /* ── Fix #5: RTL title alignment ── */
-[dir="rtl"] .bd-title       { text-align: right; }
-[dir="rtl"] .bd-tag         { justify-content: flex-end; }
-[dir="rtl"] .bd-price-row   { flex-direction: row-reverse; }
-[dir="rtl"] .bd-actions .bd-add-btn,
-[dir="rtl"] .bd-cart-link,
-[dir="rtl"] .bd-back-btn    { flex-direction: row-reverse; }
-[dir="rtl"] .bd-meta__label { text-align: right; }

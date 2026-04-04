@@ -4,12 +4,10 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  // Fix #4: Default language = Arabic on first visit, then use saved preference
   const [theme, setTheme] = useState(() => localStorage.getItem('mr-theme') || 'dark');
   const [lang, setLangState] = useState(() => {
     const saved = localStorage.getItem('mr-lang');
-    // First visit (no saved lang) → default to Arabic
-    if (!saved) return 'ar';
+    if (!saved) return 'ar'; // default Arabic on first visit
     return saved;
   });
 
@@ -20,7 +18,15 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     document.documentElement.setAttribute('lang', lang === 'ar' ? 'ar' : 'en');
-    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    // Fix #1: Arabic ONLY changes text language, NOT layout direction.
+    // We always keep dir="ltr" so layout stays identical across all languages.
+    document.documentElement.setAttribute('dir', 'ltr');
+    // Apply Arabic font class instead of RTL direction
+    if (lang === 'ar') {
+      document.documentElement.classList.add('lang-ar');
+    } else {
+      document.documentElement.classList.remove('lang-ar');
+    }
     localStorage.setItem('mr-lang', lang);
   }, [lang]);
 

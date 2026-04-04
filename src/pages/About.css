@@ -297,7 +297,6 @@
   font-size: 1rem; font-weight: 700;
   color: #fff;
 }
-[dir="rtl"] .about-store-img-badge { left: auto; right: 16px; }
 [data-theme="light"] .about-store-img-badge {
   background: rgba(255,255,255,.85);
   color: var(--ink);
@@ -330,7 +329,6 @@
   display: flex; align-items: flex-start; gap: 16px;
   margin-bottom: 36px;
 }
-[dir="rtl"] .about-form-header { flex-direction: row-reverse; }
 .about-form-icon { font-size: 2rem; flex-shrink: 0; margin-top: 2px; }
 .about-form-title {
   font-family: var(--font-arabic), var(--font-display);
@@ -372,7 +370,6 @@
   border-color: var(--plum-text);
   box-shadow: 0 0 0 3px rgba(124,77,189,.15);
 }
-[dir="rtl"] .about-form__input { text-align: right; }
 
 .about-form__submit {
   display: flex; align-items: center; justify-content: center;
