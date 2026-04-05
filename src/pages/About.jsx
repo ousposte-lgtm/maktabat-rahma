@@ -103,7 +103,7 @@ export default function About() {
             </div>
           </div>
           <div className="about-visual">
-            <div className="about-store-img-wrap" style={{'--img-bg': 'url(/bookstore-about.jpg)'}}>
+            <div className="about-store-img-wrap">
               <img
                 src="/bookstore-about.jpg"
                 alt="مكتبة رحمة"

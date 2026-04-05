@@ -382,41 +382,26 @@
   position: relative;
   border-radius: 24px;
   overflow: hidden;
-  aspect-ratio: 3/2;
+  /* No fixed aspect-ratio — container grows to show full image */
   box-shadow: 0 12px 48px rgba(0,0,0,.45), 0 0 0 1px rgba(180,141,232,.14);
-  /* Blurred version of image fills letterbox areas */
   background: #0e0e1a;
-  display: flex; align-items: center; justify-content: center;
 }
 [data-theme="light"] .home-img-strip__img-wrap {
   box-shadow: 0 8px 32px rgba(0,0,0,.12), 0 0 0 1px rgba(124,77,189,.1);
   background: #f0ece3;
 }
-/* Blurred bg layer — fills letterbox behind the contained image */
-.home-img-strip__img-wrap::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: var(--img-bg);
-  background-size: cover;
-  background-position: center;
-  filter: blur(18px) brightness(.5) saturate(.6);
-  transform: scale(1.1);
-  z-index: 0;
-}
-[data-theme="light"] .home-img-strip__img-wrap::before {
-  filter: blur(18px) brightness(.85) saturate(.5);
-}
+/* No ::before blur needed — no fixed container means no letterbox gaps */
 .home-img-strip__img {
-  position: relative; z-index: 1;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center;
+  width: 100%;
+  height: auto;          /* grows to natural image height — zero cropping */
   display: block;
+  border-radius: 24px;
 }
 .home-img-strip__img-overlay {
   position: absolute; inset: 0; z-index: 2;
   background: linear-gradient(135deg, rgba(124,77,189,.12) 0%, transparent 60%);
   pointer-events: none;
+  border-radius: 24px;
 }
 
 /* Text side */
@@ -454,7 +439,7 @@
     grid-template-columns: 1fr;
     gap: 36px;
   }
-  .home-img-strip__img-wrap { aspect-ratio: 4/3; }
+  /* image wrap grows naturally on mobile too */
   .home-img-strip { padding: 56px 0; }
 }
 

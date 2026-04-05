@@ -95,7 +95,7 @@ export default function Home() {
       {/* ── 1.5 Image + Description Strip ── */}
       <section className="home-img-strip">
         <div className="container home-img-strip__inner">
-          <div className="home-img-strip__img-wrap" style={{'--img-bg': 'url(/bookstore.jpg)'}}>
+          <div className="home-img-strip__img-wrap">
             <img
               src="/bookstore.jpg"
               alt="مكتبة رحمة — القراءة نور"
