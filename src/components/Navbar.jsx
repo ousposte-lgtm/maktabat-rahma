@@ -1,5 +1,6 @@
 // src/components/Navbar.jsx
-// Mobile layout: [Hamburger | Lang | Theme]  ←LEFT   RIGHT→  [مكتبة رحمة]
+// Desktop: Logo LEFT | Nav CENTER | Controls RIGHT
+// Mobile:  Hamburger LEFT | Logo CENTER | Lang+Theme RIGHT
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
@@ -35,7 +36,6 @@ export default function Navbar() {
     { to: '/about', label: tx.about },
   ];
 
-  // Always scroll to top when navigating
   const handleNavClick = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setOpen(false);
@@ -48,17 +48,21 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  /* ── Shared Lang Switcher ── */
-  const LangSwitcher = ({ dropUp = false }) => (
+  /* ── Lang Switcher (shared) ── */
+  const LangSwitcher = ({ mobile = false }) => (
     <div className="lang-switcher">
-      <button className="lang-switcher__btn" onClick={() => setLangOpen(v => !v)} aria-label="Switch language">
+      <button
+        className={`lang-switcher__btn ${mobile ? 'lang-switcher__btn--mobile' : ''}`}
+        onClick={() => setLangOpen(v => !v)}
+        aria-label="Switch language"
+      >
         <span className="lang-switcher__current">{lang.toUpperCase()}</span>
         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d={dropUp ? 'M2 6l3-3 3 3' : 'M2 4l3 3 3-3'}/>
+          <path d="M2 4l3 3 3-3"/>
         </svg>
       </button>
       {langOpen && (
-        <div className={`lang-switcher__dropdown ${dropUp ? 'lang-switcher__dropdown--up' : ''}`}>
+        <div className={`lang-switcher__dropdown ${mobile ? 'lang-switcher__dropdown--mobile' : ''}`}>
           {['en', 'ar', 'fr'].map(l => (
             <button key={l}
               className={`lang-switcher__option ${lang === l ? 'active' : ''}`}
@@ -77,7 +81,9 @@ export default function Navbar() {
       <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
         <div className="navbar__inner container">
 
-          {/* ── DESKTOP: Logo left | Links center | Controls right ── */}
+          {/* ══════════════════════════════════════
+              DESKTOP: Logo | Nav Links | Controls
+              ══════════════════════════════════════ */}
           <Link to="/" className="navbar__logo navbar__logo--desktop" onClick={handleNavClick}>
             <img
               src="/logo-sm.webp"
@@ -113,47 +119,47 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* ── MOBILE: LEFT=[Hamburger|Lang|Theme]  RIGHT=[Logo] ── */}
+          {/* ══════════════════════════════════════
+              MOBILE: [Hamburger] [Logo] [Lang+Theme]
+              ══════════════════════════════════════ */}
           <div className="navbar__mobile-row">
 
-            {/* LEFT group: hamburger first, then lang, then theme */}
-            <div className="navbar__mobile-left">
-              {/* 1. Hamburger — far left */}
-              <button
-                className={`navbar__hamburger ${open ? 'open' : ''}`}
-                onClick={() => setOpen(v => !v)}
-                aria-label="Toggle menu" aria-expanded={open}
-              >
-                <span /><span /><span />
-              </button>
+            {/* LEFT: Hamburger only */}
+            <button
+              className={`navbar__hamburger ${open ? 'open' : ''}`}
+              onClick={() => setOpen(v => !v)}
+              aria-label="Toggle menu"
+              aria-expanded={open}
+            >
+              <span /><span /><span />
+            </button>
 
-              {/* 2. Language switcher */}
-              <LangSwitcher dropUp={false} />
-
-              {/* 3. Dark mode toggle */}
-              <button className="theme-toggle navbar__mobile-theme" onClick={toggleTheme} aria-label="Toggle theme">
-                {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-              </button>
-            </div>
-
-            {/* RIGHT: Logo title */}
+            {/* CENTER: Logo + site name */}
             <Link to="/" className="navbar__logo navbar__logo--mobile" onClick={handleNavClick}>
               <img
                 src="/logo-sm.webp"
                 alt="Maktabat Rahma Logo"
                 className="navbar__logo-img"
-                width="30" height="30"
+                width="28" height="28"
                 loading="eager"
               />
               <span className="navbar__logo-ar">مكتبة رحمة</span>
             </Link>
+
+            {/* RIGHT: Lang + Theme */}
+            <div className="navbar__mobile-controls">
+              <LangSwitcher mobile />
+              <button className="theme-toggle navbar__mobile-theme" onClick={toggleTheme} aria-label="Toggle theme">
+                {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+              </button>
+            </div>
 
           </div>
 
         </div>
       </header>
 
-      {/* Mobile drawer — nav links only */}
+      {/* Mobile drawer */}
       <div className={`navbar__drawer ${open ? 'navbar__drawer--open' : ''}`}>
         <nav className="navbar__drawer-links">
           {NAV_LINKS.map(({ to, label }) => (

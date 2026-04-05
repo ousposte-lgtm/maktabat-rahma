@@ -38,11 +38,19 @@ export default function About() {
       <section className="about-hero">
         <div className="about-hero__bg" />
         <div className="container about-hero__inner">
-          <p className="section-eyebrow fade-up">{tx.our_story}</p>
-          <h1 className="section-title fade-up" style={{animationDelay:'80ms'}}>
+          <div className="about-hero__logo-wrap fade-up">
+            <img
+              src="/logo.webp"
+              alt="مكتبة رحمة"
+              className="about-hero__logo"
+              loading="eager"
+            />
+          </div>
+          <p className="section-eyebrow fade-up" style={{animationDelay:'60ms'}}>{tx.our_story}</p>
+          <h1 className="section-title fade-up" style={{animationDelay:'120ms'}}>
             {tx.about_title} <em>{tx.about_title_em}</em>
           </h1>
-          <div className="about-hero__arabic fade-up" style={{animationDelay:'160ms'}}>
+          <div className="about-hero__arabic fade-up" style={{animationDelay:'200ms'}}>
             <span>مكتبة رحمة</span>
             <span className="about-hero__arabic-sub">
               {lang==='ar' ? 'مكتبة الرحمة' : lang==='fr' ? 'Bibliothèque de la Miséricorde' : 'Library of Mercy'}
@@ -54,54 +62,17 @@ export default function About() {
       <section className="container about-section">
         <div className="about-grid">
           <div className="about-text fade-up">
-            <p className="section-eyebrow">
-              {lang==='ar' ? 'مهمتنا' : lang==='fr' ? 'Notre Mission' : 'Our Mission'}
-            </p>
-            <h2 className="about-section-title">
-              {lang==='ar'
-                ? 'نشر العلم النافع على منهج أهل السنة والجماعة'
-                : lang==='fr'
-                ? 'Diffuser le savoir authentique selon la voie des Ahl al-Sunna'
-                : 'Spreading Authentic Knowledge on the Path of the Salaf'}
-            </h2>
-            <p>
-              {lang==='ar'
-                ? 'نوفر الكتب الإسلامية الأصيلة لأهل السنة والجماعة والسلف الصالح. مكتبة رحمة مكرّسة لنشر العلم النافع من خلال تقديم المؤلفات الموثوقة في العقيدة والفقه والحديث وعلوم القرآن.'
-                : lang==='fr'
-                ? 'Nous proposons des livres islamiques authentiques pour Ahl al-Sunnah wal-Jamaa'ah et les pieux prédécesseurs. Maktabat Rahma est dédiée à la diffusion du savoir bénéfique à travers des ouvrages de référence en croyance, jurisprudence, hadith et sciences coraniques.'
-                : 'We provide authentic Islamic books for Ahl al-Sunnah wal-Jama'ah and the righteous Salaf. Maktabat Rahma is dedicated to spreading beneficial knowledge by offering trusted works in creed, jurisprudence, hadith, and Qur'an exegesis.'}
-            </p>
-            <p>
-              {lang==='ar'
-                ? 'مهمتنا هي الحفاظ على إرث السلف ونشره، وتوجيه القرّاء نحو الفهم السليم والعمل الصادق. نسعى إلى جعل العلم الموثوق في متناول الجميع، مع عناية فائقة في الانتقاء، وخدمة ممتازة، وتوصيل سريع.'
-                : lang==='fr'
-                ? 'Notre mission est de préserver et de partager l'héritage des Salaf, guidant les lecteurs vers une compréhension saine et une pratique sincère. Nous nous efforçons de rendre la science fiable accessible, avec une sélection soigneuse, un service excellent et une livraison rapide.'
-                : 'Our mission is to preserve and share the legacy of the Salaf, guiding readers toward sound understanding and sincere practice. We strive to make reliable scholarship accessible, with careful curation, excellent service, and fast delivery.'}
-            </p>
-
-            {/* Feature badges */}
-            <div className="about-features">
-              {[
-                { icon: '📖', label: lang==='ar' ? 'كتب إسلامية' : lang==='fr' ? 'Titres islamiques' : 'Islamic titles' },
-                { icon: '✅', label: lang==='ar' ? 'منهج صحيح' : lang==='fr' ? 'Méthodologie authentique' : 'Authentic methodology' },
-                { icon: '🤝', label: lang==='ar' ? 'خدمة موثوقة' : lang==='fr' ? 'Service de confiance' : 'Trusted service' },
-                { icon: '🚚', label: lang==='ar' ? 'توصيل سريع' : lang==='fr' ? 'Livraison rapide' : 'Fast delivery' },
-              ].map(f => (
-                <div key={f.label} className="about-feature-badge">
-                  <span className="about-feature-badge__icon">{f.icon}</span>
-                  <span className="about-feature-badge__label">{f.label}</span>
-                </div>
-              ))}
-            </div>
+            <p className="section-eyebrow">{tx.our_mission}</p>
+            <h2 className="about-section-title">{tx.mission_title}</h2>
+            <p>{tx.mission_p1}</p>
+            <p>{tx.mission_p2}</p>
           </div>
-
           <div className="about-visual">
             <div className="about-store-img-wrap">
               <img
-                src="/desk.webp"
-                alt="مكتبة رحمة — مكتبة القرآن والعلم"
+                src="/bookstore-about.webp"
+                alt="مكتبة رحمة"
                 className="about-store-img"
-                loading="lazy"
                 onError={e => { e.target.style.display='none'; }}
               />
               <div className="about-store-img-badge">
