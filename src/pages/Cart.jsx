@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { t } from '../i18n/translations';
+import { sanitizeText } from '../utils/sanitize';
 import './Cart.css';
 
 const WA_LINK = 'https://wa.me/212608755373';  // Direct number — supports ?text= pre-fill
@@ -51,6 +52,11 @@ export default function Cart() {
     // Guard: do nothing if form is not filled or cart is empty
     if (!formFilled || items.length === 0) return;
 
+    // Sanitize user input before embedding in URL
+    const safeName    = sanitizeText(form.name,    100);
+    const safeAddress = sanitizeText(form.address, 200);
+    const safeCity    = sanitizeText(form.city,    100);
+
     // Build order lines
     const lines = items.map((item, i) =>
       `${i + 1}. ${item.title}${item.author ? ` — ${item.author}` : ''}\n` +
@@ -62,9 +68,9 @@ export default function Cart() {
       'طلب جديد - مكتبة رحمة',
       '',
       '--- بيانات التوصيل ---',
-      `الاسم: ${form.name.trim()}`,
-      `العنوان: ${form.address.trim()}`,
-      `المدينة: ${form.city.trim()}`,
+      `الاسم: ${safeName}`,
+      `العنوان: ${safeAddress}`,
+      `المدينة: ${safeCity}`,
       '',
       '--- الطلب ---',
       ...lines,
@@ -182,6 +188,7 @@ export default function Cart() {
                     type="text" name="name"
                     value={form.name} onChange={handleChange}
                     placeholder={s.ph_name} autoComplete="name"
+                    maxLength={100}
                   />
                 </div>
                 <div className="cart__field">
@@ -191,6 +198,7 @@ export default function Cart() {
                     type="text" name="address"
                     value={form.address} onChange={handleChange}
                     placeholder={s.ph_addr} autoComplete="street-address"
+                    maxLength={200}
                   />
                 </div>
                 <div className="cart__field">
@@ -200,6 +208,7 @@ export default function Cart() {
                     type="text" name="city"
                     value={form.city} onChange={handleChange}
                     placeholder={s.ph_city} autoComplete="address-level2"
+                    maxLength={100}
                   />
                 </div>
               </div>
