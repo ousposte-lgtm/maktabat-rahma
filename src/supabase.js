@@ -129,7 +129,7 @@ export async function uploadMultipleImages(files, { onProgress, onError } = {}) 
       results.push(url);
     } catch (err) {
       const msg = `Failed to upload "${file.name}": ${err.message}`;
-      if (import.meta.env.DEV) console.warn('[uploadMultipleImages]', msg);
+      console.warn('[uploadMultipleImages]', msg);
       if (onError) onError(msg, file);
       // Skip failed file — don't crash the whole batch
     }
