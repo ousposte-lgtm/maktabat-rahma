@@ -276,18 +276,37 @@
   overflow: hidden;
   box-shadow: 0 8px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(180,141,232,.15);
   aspect-ratio: 4/3;
+  background: #0e0e1a;
+  display: flex; align-items: center; justify-content: center;
 }
 [data-theme="light"] .about-store-img-wrap {
   box-shadow: 0 8px 32px rgba(0,0,0,.12), 0 0 0 1px rgba(124,77,189,.12);
+  background: #f0ece3;
+}
+/* Blurred bg behind the contained image */
+.about-store-img-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: var(--img-bg);
+  background-size: cover;
+  background-position: center;
+  filter: blur(18px) brightness(.5) saturate(.6);
+  transform: scale(1.1);
+  z-index: 0;
+}
+[data-theme="light"] .about-store-img-wrap::before {
+  filter: blur(18px) brightness(.85) saturate(.5);
 }
 .about-store-img {
+  position: relative; z-index: 1;
   width: 100%; height: 100%;
-  object-fit: cover; display: block;
-  transition: transform 600ms cubic-bezier(.25,.46,.45,.94);
+  object-fit: contain;
+  object-position: center;
+  display: block;
 }
-.about-store-img-wrap:hover .about-store-img { transform: scale(1.04); }
 .about-store-img-badge {
   position: absolute; bottom: 16px; left: 16px;
+  z-index: 2;
   background: rgba(8,8,16,.75);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(180,141,232,.25);
