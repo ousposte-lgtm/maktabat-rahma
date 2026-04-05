@@ -42,8 +42,17 @@ export default function Footer() {
         {/* Brand */}
         <div className="footer__brand">
           <Link to="/" className="footer__brand-link">
-            <span className="footer__brand-ar">مكتبة رحمة</span>
-            <span className="footer__brand-en">Maktabat Rahma</span>
+            <img
+              src="/logo.webp"
+              alt="Maktabat Rahma"
+              className="footer__logo-img"
+              width="72" height="72"
+              loading="lazy"
+            />
+            <div className="footer__brand-text">
+              <span className="footer__brand-ar">مكتبة رحمة</span>
+              <span className="footer__brand-en">Maktabat Rahma</span>
+            </div>
           </Link>
           <p className="footer__tagline">{tx.tagline_footer}</p>
 

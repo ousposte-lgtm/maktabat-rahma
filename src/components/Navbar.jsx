@@ -79,8 +79,17 @@ export default function Navbar() {
 
           {/* ── DESKTOP: Logo left | Links center | Controls right ── */}
           <Link to="/" className="navbar__logo navbar__logo--desktop" onClick={handleNavClick}>
-            <span className="navbar__logo-ar">مكتبة رحمة</span>
-            <span className="navbar__logo-en">Maktabat Rahma</span>
+            <img
+              src="/logo-sm.webp"
+              alt="Maktabat Rahma Logo"
+              className="navbar__logo-img"
+              width="36" height="36"
+              loading="eager"
+            />
+            <div className="navbar__logo-text">
+              <span className="navbar__logo-ar">مكتبة رحمة</span>
+              <span className="navbar__logo-en">Maktabat Rahma</span>
+            </div>
           </Link>
 
           <nav className="navbar__links" aria-label="Main navigation">
@@ -129,6 +138,13 @@ export default function Navbar() {
 
             {/* RIGHT: Logo title */}
             <Link to="/" className="navbar__logo navbar__logo--mobile" onClick={handleNavClick}>
+              <img
+                src="/logo-sm.webp"
+                alt="Maktabat Rahma Logo"
+                className="navbar__logo-img"
+                width="30" height="30"
+                loading="eager"
+              />
               <span className="navbar__logo-ar">مكتبة رحمة</span>
             </Link>
 

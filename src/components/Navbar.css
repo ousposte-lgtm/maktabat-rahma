@@ -27,7 +27,7 @@
 
 /* Logo — LEFT on desktop */
 .navbar__logo--desktop {
-  display: flex; flex-direction: column; gap: 0;
+  display: flex; flex-direction: row; align-items: center; gap: 10px;
   flex-shrink: 0; line-height: 1;
   margin-right: 40px; text-decoration: none;
 }
@@ -264,3 +264,54 @@
 @keyframes slideDown { from { opacity:0; transform:translateY(-8px) } to { opacity:1; transform:translateY(0) } }
 @keyframes slideUp   { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:translateY(0) } }
 @keyframes fadeIn    { from { opacity:0 } to { opacity:1 } }
+
+/* ── Logo image integration ── */
+.navbar__logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 6px;
+  /* Mix-blend so logo blends with dark bg — white bg becomes transparent */
+  mix-blend-mode: luminosity;
+  opacity: 0.92;
+  filter: drop-shadow(0 0 6px rgba(180, 141, 232, 0.35));
+  transition: transform 300ms var(--ease), filter 300ms var(--ease), opacity 300ms var(--ease);
+}
+.navbar__logo--desktop:hover .navbar__logo-img,
+.navbar__logo--mobile:hover .navbar__logo-img {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 10px rgba(180, 141, 232, 0.65));
+  opacity: 1;
+}
+[data-theme="light"] .navbar__logo-img {
+  mix-blend-mode: normal;
+  filter: drop-shadow(0 2px 6px rgba(124, 77, 189, 0.2));
+}
+
+/* Desktop: logo + text side by side */
+.navbar__logo--desktop {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.navbar__logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  line-height: 1;
+}
+
+/* Mobile: logo + text together */
+.navbar__logo--mobile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@media (max-width: 768px) {
+  .navbar__logo-img {
+    width: 30px;
+    height: 30px;
+  }
+}

@@ -464,3 +464,36 @@
   .home-img-strip__features { gap: 10px; }
   .home-img-strip__feat { font-size: .72rem; padding: 6px 12px; }
 }
+
+/* ── Hero logo watermark ── */
+.hero__logo-watermark {
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  transform: translateY(-50%);
+  z-index: 1;
+  pointer-events: none;
+  animation: watermarkIn 1.2s ease both;
+}
+.hero__logo-watermark img {
+  width: 280px;
+  height: 280px;
+  object-fit: contain;
+  opacity: 0.055;
+  mix-blend-mode: luminosity;
+  filter: blur(0.5px);
+}
+[data-theme="light"] .hero__logo-watermark img {
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+}
+
+@keyframes watermarkIn {
+  from { opacity: 0; transform: translateY(-50%) scale(0.9); }
+  to   { opacity: 1; transform: translateY(-50%) scale(1); }
+}
+
+/* Hide watermark on mobile (visual clutter) */
+@media (max-width: 860px) {
+  .hero__logo-watermark { display: none; }
+}

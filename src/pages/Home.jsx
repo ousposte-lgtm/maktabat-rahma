@@ -39,6 +39,11 @@ export default function Home() {
       <section className="hero">
         <div className="hero__bg" />
         <div className="hero__grid" />
+        {/* Watermark logo — subtle background element */}
+        <div className="hero__logo-watermark" aria-hidden="true">
+          <img src="/logo.webp" alt="" width="280" height="280" />
+        </div>
+
         <div className="container hero__inner">
           <div className="hero__content">
             <span className="hero__eyebrow">
