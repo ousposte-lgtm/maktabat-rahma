@@ -66,15 +66,16 @@ export default function Home() {
             </div>
           </div>
           <div className="hero__visual">
-            <div className="hero__book-stack">
-              <div className="hero__book hero__book--behind-l" />
-              <div className="hero__book hero__book--behind-r" />
-              <div className="hero__book hero__book--main">
-                <span className="hero__book-title">اقرأ</span>
-                <div className="hero__book-line" />
-                <span className="hero__book-sub">Maktabat Rahma</span>
-              </div>
-              <div className="hero__glow" />
+            <div className="hero__logo-display">
+              <img
+                src="/logo.webp"
+                alt="مكتبة رحمة"
+                className="hero__logo-main"
+                width="320" height="320"
+                loading="eager"
+              />
+              <div className="hero__logo-glow" aria-hidden="true" />
+              <div className="hero__logo-ring" aria-hidden="true" />
             </div>
             <div className="hero__float-badge">
               <div className="hero__float-badge-icon">📚</div>
@@ -184,12 +185,13 @@ export default function Home() {
       {/* ── 3. About snippet ── */}
       <section className="home-about-strip">
         <div className="container home-about-strip__inner">
-          <div className="home-about-strip__quote">
-            <span className="home-about-strip__ar">اقرأ بسم ربك</span>
-            <span className="home-about-strip__verse">
-              {lang === 'ar' ? 'اقرأ باسم ربك' : lang === 'fr' ? 'Lis au nom de ton Seigneur' : 'Read in the name of your Lord'}
-            </span>
-            <span className="home-about-strip__ref">— {lang === 'ar' ? 'القرآن ٩٦:١' : 'Quran 96:1'}</span>
+          <div className="home-about-strip__logo-col">
+            <img
+              src="/logo.webp"
+              alt="مكتبة رحمة"
+              className="home-about-strip__logo"
+              loading="lazy"
+            />
           </div>
           <div className="home-about-strip__text">
             <p className="section-eyebrow">{tx.our_story}</p>

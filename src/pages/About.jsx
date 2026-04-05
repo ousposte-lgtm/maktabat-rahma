@@ -38,11 +38,19 @@ export default function About() {
       <section className="about-hero">
         <div className="about-hero__bg" />
         <div className="container about-hero__inner">
-          <p className="section-eyebrow fade-up">{tx.our_story}</p>
-          <h1 className="section-title fade-up" style={{animationDelay:'80ms'}}>
+          <div className="about-hero__logo-wrap fade-up">
+            <img
+              src="/logo.webp"
+              alt="مكتبة رحمة"
+              className="about-hero__logo"
+              loading="eager"
+            />
+          </div>
+          <p className="section-eyebrow fade-up" style={{animationDelay:'60ms'}}>{tx.our_story}</p>
+          <h1 className="section-title fade-up" style={{animationDelay:'120ms'}}>
             {tx.about_title} <em>{tx.about_title_em}</em>
           </h1>
-          <div className="about-hero__arabic fade-up" style={{animationDelay:'160ms'}}>
+          <div className="about-hero__arabic fade-up" style={{animationDelay:'200ms'}}>
             <span>مكتبة رحمة</span>
             <span className="about-hero__arabic-sub">
               {lang==='ar' ? 'مكتبة الرحمة' : lang==='fr' ? 'Bibliothèque de la Miséricorde' : 'Library of Mercy'}

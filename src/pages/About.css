@@ -401,3 +401,19 @@
   .about-form-header { gap: 12px; }
   .about-form-title { font-size: 1.2rem; }
 }
+
+/* ── About Hero — Logo ── */
+.about-hero__logo-wrap {
+  display: flex; justify-content: center;
+  margin-bottom: 24px;
+}
+.about-hero__logo {
+  width: 120px; height: 120px;
+  object-fit: contain;
+  border-radius: 22px;
+  filter: drop-shadow(0 0 20px rgba(124,77,189,.5)) drop-shadow(0 0 50px rgba(124,77,189,.18));
+  animation: float 5s ease-in-out infinite;
+}
+[data-theme="light"] .about-hero__logo {
+  filter: drop-shadow(0 4px 16px rgba(124,77,189,.3));
+}
