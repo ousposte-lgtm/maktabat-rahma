@@ -417,3 +417,32 @@
 [data-theme="light"] .about-hero__logo {
   filter: drop-shadow(0 4px 16px rgba(124,77,189,.3));
 }
+
+/* ── Mission tags ── */
+.about-mission-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.about-mission-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  background: rgba(124, 77, 189, 0.10);
+  border: 1px solid rgba(180, 141, 232, 0.22);
+  color: var(--plum-text);
+  transition: background 200ms ease, border-color 200ms ease;
+}
+.about-mission-tag:hover {
+  background: rgba(124, 77, 189, 0.18);
+  border-color: rgba(180, 141, 232, 0.4);
+}
+[data-theme="light"] .about-mission-tag {
+  background: rgba(124, 77, 189, 0.07);
+  border-color: rgba(124, 77, 189, 0.2);
+}

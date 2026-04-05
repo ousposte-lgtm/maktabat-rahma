@@ -63,17 +63,52 @@ export default function About() {
         <div className="about-grid">
           <div className="about-text fade-up">
             <p className="section-eyebrow">{tx.our_mission}</p>
-            <h2 className="about-section-title">{tx.mission_title}</h2>
-            <p>{tx.mission_p1}</p>
-            <p>{tx.mission_p2}</p>
+            <h2 className="about-section-title">
+              {lang === 'ar'
+                ? 'نوفر الكتب الإسلامية الأصيلة لأهل السنة والجماعة والسلف الصالح'
+                : lang === 'fr'
+                ? 'Nous fournissons des livres islamiques authentiques pour Ahl al-Sunna wal-Jamaa'
+                : "We provide authentic Islamic books for Ahl al-Sunnah wal-Jama'ah and the righteous Salaf"
+              }
+            </h2>
+            <p>
+              {lang === 'ar'
+                ? 'مكتبة رحمة مكرّسة لنشر العلم النافع من خلال تقديم المؤلفات الموثوقة في العقيدة والفقه والحديث وعلوم القرآن. رسالتنا حفظ تراث السلف الصالح ونشره، وتوجيه القراء نحو الفهم السليم والعمل الصادق.'
+                : lang === 'fr'
+                ? "Maktabat Rahma est dédiée à la diffusion du savoir bénéfique en proposant des œuvres de référence en croyance, jurisprudence, hadith et exégèse coranique. Notre mission est de préserver et partager l'héritage des Salaf, guidant les lecteurs vers une compréhension saine et une pratique sincère."
+                : 'Maktabat Rahma is dedicated to spreading beneficial knowledge by offering trusted works in creed, jurisprudence, hadith, and Qur\'an exegesis. Our mission is to preserve and share the legacy of the Salaf, guiding readers toward sound understanding and sincere practice.'
+              }
+            </p>
+            <p>
+              {lang === 'ar'
+                ? 'نسعى إلى جعل العلم الموثوق في متناول الجميع، من خلال انتقاء دقيق وخدمة متميزة وتوصيل سريع.'
+                : lang === 'fr'
+                ? 'Nous nous efforçons de rendre la connaissance fiable accessible à tous, avec une sélection rigoureuse, un service excellent et une livraison rapide.'
+                : 'We strive to make reliable scholarship accessible, with careful curation, excellent service, and fast delivery.'
+              }
+            </p>
+            <div className="about-mission-tags">
+              <span className="about-mission-tag">
+                {lang === 'ar' ? 'كتب إسلامية' : lang === 'fr' ? 'Titres islamiques' : 'Islamic titles'}
+              </span>
+              <span className="about-mission-tag">
+                {lang === 'ar' ? 'منهجية أصيلة' : lang === 'fr' ? 'Méthodologie authentique' : 'Authentic methodology'}
+              </span>
+              <span className="about-mission-tag">
+                {lang === 'ar' ? 'خدمة موثوقة' : lang === 'fr' ? 'Service de confiance' : 'Trusted service'}
+              </span>
+              <span className="about-mission-tag">
+                {lang === 'ar' ? 'توصيل سريع' : lang === 'fr' ? 'Livraison rapide' : 'Fast delivery'}
+              </span>
+            </div>
           </div>
           <div className="about-visual">
             <div className="about-store-img-wrap">
               <img
-                src="/bookstore-about.webp"
+                src="/bookstore-about.jpg"
                 alt="مكتبة رحمة"
                 className="about-store-img"
-                onError={e => { e.target.style.display='none'; }}
+                onError={e => { e.target.src='/bookstore-about.webp'; }}
               />
               <div className="about-store-img-badge">
                 <span>مكتبة رحمة</span>

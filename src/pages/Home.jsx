@@ -77,13 +77,6 @@ export default function Home() {
               <div className="hero__logo-glow" aria-hidden="true" />
               <div className="hero__logo-ring" aria-hidden="true" />
             </div>
-            <div className="hero__float-badge">
-              <div className="hero__float-badge-icon">📚</div>
-              <div className="hero__float-badge-text">
-                <span className="hero__float-badge-label">{tx.new_arrivals}</span>
-                <span className="hero__float-badge-value">{tx.updated_daily}</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -104,11 +97,11 @@ export default function Home() {
         <div className="container home-img-strip__inner">
           <div className="home-img-strip__img-wrap">
             <img
-              src="/bookstore.webp"
+              src="/bookstore.jpg"
               alt="مكتبة رحمة — القراءة نور"
               className="home-img-strip__img"
               loading="lazy"
-              onError={e => { e.target.style.display='none'; }}
+              onError={e => { e.target.src='/bookstore.webp'; }}
             />
             <div className="home-img-strip__img-overlay" />
           </div>
