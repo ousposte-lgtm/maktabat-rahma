@@ -63,17 +63,42 @@ export default function Admin() {
   const [loginErr,   setLoginErr]   = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
   const [showPass,   setShowPass]   = useState(false);
+  // Client-side brute-force guard: lock after 5 failures for 60 s
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [loginLockUntil, setLoginLockUntil] = useState(0);
+  const MAX_ATTEMPTS = 5;
+  const LOCK_SECONDS = 60;
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    // Check lockout
+    const now = Date.now();
+    if (now < loginLockUntil) {
+      const secs = Math.ceil((loginLockUntil - now) / 1000);
+      setLoginErr(`Too many failed attempts. Try again in ${secs}s.`);
+      return;
+    }
     if (!loginEmail.trim() || !loginPass) { setLoginErr('Please enter your email and password.'); return; }
     setLoginLoading(true); setLoginErr('');
-    const { error: authError } = await supabase.auth.signInWithPassword({ email: loginEmail.trim(), password: loginPass });
+    const { error: authError } = await supabase.auth.signInWithPassword({ email: loginEmail.trim().toLowerCase(), password: loginPass });
     if (authError) {
-      const c = authError.message?.toLowerCase() ?? '';
-      setLoginErr(c.includes('invalid') || c.includes('credentials') ? 'Incorrect email or password.'
-        : c.includes('rate') || c.includes('limit') ? 'Too many attempts. Try again later.'
-        : 'Sign-in failed: ' + authError.message);
+      const newAttempts = loginAttempts + 1;
+      setLoginAttempts(newAttempts);
+      if (newAttempts >= MAX_ATTEMPTS) {
+        const lockUntil = Date.now() + LOCK_SECONDS * 1000;
+        setLoginLockUntil(lockUntil);
+        setLoginAttempts(0);
+        setLoginErr(`Too many failed attempts. Account locked for ${LOCK_SECONDS} seconds.`);
+      } else {
+        const c = authError.message?.toLowerCase() ?? '';
+        setLoginErr(c.includes('invalid') || c.includes('credentials') ? 'Incorrect email or password.'
+          : c.includes('rate') || c.includes('limit') ? 'Too many attempts. Try again later.'
+          : 'Sign-in failed. Please try again.');
+      }
+    } else {
+      // Reset on success
+      setLoginAttempts(0);
+      setLoginLockUntil(0);
     }
     setLoginLoading(false);
   };
@@ -158,9 +183,15 @@ export default function Admin() {
 
   const validate = () => {
     const errs = {};
-    if (!form.title.trim()) errs.title = 'Title is required';
-    if (!form.category) errs.category = 'Category is required';
-    if (form.price !== '' && isNaN(Number(form.price))) errs.price = 'Must be a number';
+    if (!form.title.trim())                     errs.title    = 'Title is required';
+    if (form.title.trim().length > 200)         errs.title    = 'Title too long (max 200 chars)';
+    if (form.author.trim().length > 150)        errs.author   = 'Author too long (max 150 chars)';
+    if (!form.category)                         errs.category = 'Category is required';
+    if (!CATEGORIES.includes(form.category) && form.category !== '')
+                                                errs.category = 'Invalid category';
+    if (form.price !== '' && (isNaN(Number(form.price)) || Number(form.price) < 0 || Number(form.price) > 99999))
+                                                errs.price    = 'Price must be 0–99999';
+    if (form.description.length > 1000)         errs.description = 'Description too long (max 1000 chars)';
     setFormErrors(errs);
     return !Object.keys(errs).length;
   };
@@ -272,7 +303,7 @@ export default function Admin() {
               </button>
             </div>
           </div>
-          <button type="submit" className="admin-login__submit-btn" disabled={loginLoading}>
+          <button type="submit" className="admin-login__submit-btn" disabled={loginLoading || Date.now() < loginLockUntil}>
             {loginLoading ? <><span className="spinner" style={{width:18,height:18,borderWidth:2}} /> Signing in…</> : <>Sign In →</>}
           </button>
         </form>
@@ -433,11 +464,14 @@ export default function Admin() {
 
                   <FormField label="Title *" error={formErrors.title}>
                     <input value={form.title} onChange={e => setField('title', e.target.value)}
-                      placeholder="e.g. The Alchemist" className={formErrors.title ? 'error' : ''} />
+                      placeholder="e.g. The Alchemist" className={formErrors.title ? 'error' : ''}
+                      maxLength={200} />
                   </FormField>
 
                   <FormField label="Author">
-                    <input value={form.author} onChange={e => setField('author', e.target.value)} placeholder="e.g. Paulo Coelho" />
+                    <input value={form.author} onChange={e => setField('author', e.target.value)}
+                      placeholder="e.g. Paulo Coelho"
+                      maxLength={150} />
                   </FormField>
 
                   <div className="admin-modal__row">
@@ -448,14 +482,15 @@ export default function Admin() {
                       </select>
                     </FormField>
                     <FormField label="Price (MAD)" error={formErrors.price}>
-                      <input type="number" min="0" step="0.01" value={form.price}
+                      <input type="number" min="0" max="99999" step="0.01" value={form.price}
                         onChange={e => setField('price', e.target.value)} placeholder="0.00" className={formErrors.price ? 'error' : ''} />
                     </FormField>
                   </div>
 
                   <FormField label="Description">
                     <textarea value={form.description} onChange={e => setField('description', e.target.value)}
-                      placeholder="A short description…" rows={3} />
+                      placeholder="A short description…" rows={3}
+                      maxLength={1000} />
                   </FormField>
 
                   {/* Featured toggle */}
